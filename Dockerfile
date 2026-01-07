@@ -25,12 +25,6 @@ RUN > database/database.sqlite
 # СОЗДАНИЕ ТАБЛИЦЫ MIGRATIONS (ОДИН РАЗ!)
 RUN php artisan migrate:install
 
-# Настройка прав
-RUN chown -R www-data:www-data /var/www/html/storage \
-    && chown -R www-data:www-data /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
-
 # ТОЛЬКО ЗАПУСК СЕРВЕРА - без миграций!
 CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
 
