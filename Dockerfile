@@ -22,10 +22,4 @@ RUN npm run build
 
 RUN > database/database.sqlite
 
-# СОЗДАНИЕ ТАБЛИЦЫ MIGRATIONS (ОДИН РАЗ!)
-RUN php artisan migrate:install
-
-# ТОЛЬКО ЗАПУСК СЕРВЕРА - без миграций!
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
-
-# CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
