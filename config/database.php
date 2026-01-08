@@ -91,7 +91,7 @@ return [
             'database' => env('DB_DATABASE', null),
             'username' => env('DB_USERNAME', null),
             'password' => env('DB_PASSWORD', null),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
