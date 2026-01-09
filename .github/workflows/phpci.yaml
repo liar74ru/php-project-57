@@ -51,6 +51,7 @@ jobs:
             -Dsonar.php.coverage.reportPaths=build/logs/clover.xml
             -Dsonar.qualitygate.wait=true
             -Dsonar.coverage.exclusions=tests/**,vendor/**,node_modules/**
+            -X
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v4

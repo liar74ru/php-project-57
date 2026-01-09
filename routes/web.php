@@ -10,4 +10,6 @@ Route::get('/home', function () {
     return 'hello, world';
 });
 
-Route::get('register', [Controller::class, 'show'])->name('articles.show');
+Route::get('/vite-test', function() {
+    return view('vite-test');
+});

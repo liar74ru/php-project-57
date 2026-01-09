@@ -10,16 +10,9 @@
     <!-- Шрифт Nunito -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
 
-    <!-- Основные стили -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <!-- Vite для стилей (ВАЖНО: не asset()!) -->
+    @vite(['resources/css/app.css'])
 
-    <!-- Дополнительные стили -->
-{{--    <style>--}}
-{{--        {!! file_get_contents(resource_path('css/flash-messages.css')) !!}--}}
-{{--        {!! file_get_contents(resource_path('css/createedit.css')) !!}--}}
-{{--    </style>--}}
-
-    <!-- Стили для конкретных страниц -->
     @stack('styles')
 </head>
 <body>
@@ -36,7 +29,9 @@
     @include('layouts.partials.footer')
 </div>
 
-<!-- Подключаем скрипты -->
-@include('layouts.partials.scripts')
+<!-- Vite для JS (если есть) -->
+@vite(['resources/js/app.js'])
+
+@stack('scripts')
 </body>
 </html>
