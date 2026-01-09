@@ -18,6 +18,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set up PHP ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
@@ -33,21 +35,22 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: make test-coverage
 
-#      - name: SonarQube Scan
-#        uses: SonarSource/sonarqube-scan-action@v6
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        with:
-#          args: >
-#            -Dsonar.host.url=https://sonarcloud.io
-#            -Dsonar.projectKey=liar74ru_php-project-57
-#            -Dsonar.organization=liar74ru
-#            -Dsonar.projectName=php-project-57
-#            -Dsonar.sources=app,database,config,routes
-#            -Dsonar.tests=tests
-#            -Dsonar.php.coverage.reportPaths=build/logs/clover.xml
-#            -Dsonar.qualitygate.wait=true
-#            -Dsonar.coverage.exclusions=tests/**,vendor/**,node_modules/**
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            fetch-depth: 0
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.projectKey=liar74ru_php-project-57
+            -Dsonar.organization=liar74ru
+            -Dsonar.projectName=php-project-57
+            -Dsonar.sources=app,database,config,routes
+            -Dsonar.tests=tests
+            -Dsonar.php.coverage.reportPaths=build/logs/clover.xml
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.coverage.exclusions=tests/**,vendor/**,node_modules/**
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v4
@@ -66,6 +69,8 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
