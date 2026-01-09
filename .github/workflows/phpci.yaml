@@ -41,7 +41,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            fetch-depth: 0
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.projectKey=liar74ru_php-project-57
             -Dsonar.organization=liar74ru
@@ -51,7 +50,6 @@ jobs:
             -Dsonar.php.coverage.reportPaths=build/logs/clover.xml
             -Dsonar.qualitygate.wait=true
             -Dsonar.coverage.exclusions=tests/**,vendor/**,node_modules/**
-            -X
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v4
