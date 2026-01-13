@@ -1,12 +1,11 @@
 name: PHP CI
 
-on:
+n:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - '*'
+      - '**'
+    tags:
+      - '**'
 
 jobs:
   build:
