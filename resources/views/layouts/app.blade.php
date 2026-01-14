@@ -1,37 +1,32 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Менеджер задач')</title>
+        <title>@yield('title', 'Менеджер задач')</title>
 
-    <!-- Шрифт Nunito -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
 
-    <!-- Vite для стилей (ВАЖНО: не asset()!) -->
-    @vite(['resources/css/app.css'])
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles')
+    </head>
+    <body class="font-sans antialiased">
+    <div id="app">
 
-    @stack('styles')
-</head>
-<body>
-<div id="app">
-    <!-- Подключаем верхнюю часть -->
-    @include('layouts.partials.header')
+        <!-- Подключаем верхнюю часть -->
+        @include('layouts.partials.header')
 
-    <!-- Основной контент -->
-    <main class="main-content">
-        @yield('content')
-    </main>
+        <!-- Основной контент -->
+        <main class="main-content">
+{{--            @include('flash::message')--}}
+            @yield('content')
+        </main>
 
-    <!-- Подключаем нижнюю часть -->
+        <!-- Подключаем нижнюю часть -->
     @include('layouts.partials.footer')
-</div>
-
-<!-- Vite для JS (если есть) -->
-@vite(['resources/js/app.js'])
-
-@stack('scripts')
-</body>
+    </body>
 </html>
