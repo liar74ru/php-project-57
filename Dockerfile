@@ -24,6 +24,6 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-RUN touch database/database.sqlite
+RUN > database/database.sqlite
 
 CMD ["bash", "-c", "php artisan migrate:install && php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
