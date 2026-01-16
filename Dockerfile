@@ -1,25 +1,29 @@
 FROM php:8.4-cli
 
-# Установка только PostgreSQL расширений
-RUN apt-get update && apt-get install -y libpq-dev
-RUN docker-php-ext-install pdo pdo_pgsql
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev
+RUN docker-php-ext-install pdo pdo_pgsql zip
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
+
+RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
+RUN apt-get install -y nodejs
 
 WORKDIR /app
+
 COPY . .
 
-# ПРОСТЕЙШАЯ КОМАНДА - сначала тест, потом Laravel
-CMD bash -c "\
-    echo '=== STARTING CONTAINER ==='; \
-    echo 'Time: ' \$(date); \
-    echo '=== RUNNING DIRECT PHP TEST ==='; \
-    php test-deploy.php; \
-    sleep 2; \
-    echo '=== TRYING LARAVEL MIGRATIONS ==='; \
-    if [ -f vendor/autoload.php ]; then \
-        php artisan migrate:fresh --seed --force --no-interaction --verbose 2>&1; \
-        echo 'Laravel migrations attempted'; \
-    else \
-        echo 'Vendor not found, skipping Laravel'; \
-    fi; \
-    echo '=== STARTING SERVER ==='; \
-    php -S 0.0.0.0:10000 -t public"
+RUN composer install
+RUN npm ci
+RUN npm run build
+
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
+RUN touch database/database.sqlite
+
+CMD ["bash", "-c", "php artisan migrate:install && php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
