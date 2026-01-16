@@ -24,6 +24,67 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-RUN > database/database.sqlite
+RUN touch database/database.sqlite
 
-CMD ["bash", "-c", "php artisan migrate:install && php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["bash", "-c", "
+    echo '=== DEPLOYMENT STARTED ==='
+    echo 'Time: ' $(date)
+
+    # 1. Проверяем подключение к БД
+    echo '=== DATABASE CONNECTION ==='
+    php -r '
+        try {
+            \$pdo = new PDO(
+                \"pgsql:host=\" . getenv(\"DB_HOST\") . \";dbname=\" . getenv(\"DB_DATABASE\"),
+                getenv(\"DB_USERNAME\"),
+                getenv(\"DB_PASSWORD\")
+            );
+            echo \"✅ Connected to: \" . getenv(\"DB_DATABASE\") . \"\\n\";
+
+            // Проверяем текущие таблицы
+            \$stmt = \$pdo->query(\"SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'\");
+            \$tables = \$stmt->fetchAll(PDO::FETCH_COLUMN);
+            echo \"📊 Existing tables: \" . count(\$tables) . \"\\n\";
+            foreach (\$tables as \$table) {
+                echo \"   - \" . \$table . \"\\n\";
+            }
+        } catch (PDOException \$e) {
+            echo \"❌ DB Error: \" . \$e->getMessage() . \"\\n\";
+        }
+    '
+
+    # 2. Пробуем миграции
+    echo '=== RUNNING MIGRATIONS ==='
+    php artisan migrate:fresh --seed --force --verbose 2>&1 || echo 'Migration command failed'
+
+    # 3. Проверяем результат
+    echo '=== CHECKING RESULT ==='
+    php -r '
+        try {
+            \$pdo = new PDO(
+                \"pgsql:host=\" . getenv(\"DB_HOST\") . \";dbname=\" . getenv(\"DB_DATABASE\"),
+                getenv(\"DB_USERNAME\"),
+                getenv(\"DB_PASSWORD\")
+            );
+
+            \$stmt = \$pdo->query(\"SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'\");
+            \$tables = \$stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            echo \"📊 Tables after migration: \" . count(\$tables) . \"\\n\";
+            if (count(\$tables) === 0) {
+                echo \"❌ ERROR: No tables were created!\\n\";
+            } else {
+                echo \"✅ Migration successful! Tables:\\n\";
+                foreach (\$tables as \$table) {
+                    echo \"   - \" . \$table . \"\\n\";
+                }
+            }
+        } catch (Exception \$e) {
+            echo \"❌ Check failed: \" . \$e->getMessage() . \"\\n\";
+        }
+    '
+
+    # 4. Запускаем сервер
+    echo '=== STARTING SERVER ==='
+    php artisan serve --host=0.0.0.0 --port=10000
+"]
