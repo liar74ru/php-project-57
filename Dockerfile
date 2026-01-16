@@ -17,12 +17,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN mkdir -p storage/framework/sessions \
-    && chmod -R 775 storage \
-    && chown -R www-data:www-data storage \
-    && ls -la storage/
-
-
 RUN composer install
 RUN npm ci
 RUN npm run build
