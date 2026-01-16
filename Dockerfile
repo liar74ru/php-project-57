@@ -1,4 +1,4 @@
-FROM php:8.4-fpm
+FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
@@ -27,4 +27,4 @@ RUN php artisan view:cache
 
 RUN touch database/database.sqlite
 
-CMD ["php-fpm"]
+CMD ["bash", "-c", "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
