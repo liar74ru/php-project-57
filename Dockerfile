@@ -1,29 +1,34 @@
 FROM php:8.4-cli
 
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    libzip-dev
-RUN docker-php-ext-install pdo pdo_pgsql zip
-
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');"
-
-RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
-RUN apt-get install -y nodejs
+# Установка только PostgreSQL расширений
+RUN apt-get update && apt-get install -y libpq-dev
+RUN docker-php-ext-install pdo pdo_pgsql
 
 WORKDIR /app
-
 COPY . .
 
-RUN composer install
-RUN npm ci
-RUN npm run build
+# ПРОСТЕЙШАЯ КОМАНДА - сначала тест, потом Laravel
+CMD ["bash", "-c", "
+    echo '=== STARTING CONTAINER ==='
+    echo 'Time: ' $(date)
 
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
+    # 1. Запускаем наш прямой тест
+    echo '=== RUNNING DIRECT PHP TEST ==='
+    php test-deploy.php
 
-RUN touch database/database.sqlite
+    # 2. Ждём 2 секунды
+    sleep 2
 
-CMD ["bash", "-c", "php artisan migrate:install && php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+    # 3. Пробуем Laravel миграции
+    echo '=== TRYING LARAVEL MIGRATIONS ==='
+    if [ -f vendor/autoload.php ]; then
+        php artisan migrate:fresh --seed --force --no-interaction --verbose 2>&1
+        echo 'Laravel migrations attempted'
+    else
+        echo 'Vendor not found, skipping Laravel'
+    fi
+
+    # 4. Запускаем сервер
+    echo '=== STARTING SERVER ==='
+    php -S 0.0.0.0:10000 -t public
+"]
