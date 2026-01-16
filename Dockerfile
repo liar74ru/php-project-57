@@ -16,6 +16,13 @@ RUN apt-get install -y nodejs
 WORKDIR /app
 
 COPY . .
+
+RUN mkdir -p storage/framework/sessions \
+    && chmod -R 775 storage \
+    && chown -R www-data:www-data storage \
+    && ls -la storage/
+
+
 RUN composer install
 RUN npm ci
 RUN npm run build
@@ -24,6 +31,6 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-RUN > database/database.sqlite
+RUN touch database/database.sqlite
 
-CMD ["bash", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["bash", "-c", "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
