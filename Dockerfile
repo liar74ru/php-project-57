@@ -26,4 +26,4 @@ RUN php artisan view:cache
 
 RUN touch database/database.sqlite
 
-CMD ["bash", "-c", "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=10000"]
+CMD ["bash", "-c", "php artisan migrate:install && php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
