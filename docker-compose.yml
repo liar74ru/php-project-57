@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  # PHP-FPM сервис
+  php:
+    build: .
+    # FPM будет работать внутри контейнера
+
+  # Nginx сервис
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:80"  # ← Локальный порт 8000 → порт 80 в контейнере
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
