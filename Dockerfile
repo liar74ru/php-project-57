@@ -4,7 +4,6 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev
 RUN docker-php-ext-install pdo pdo_pgsql zip
-# RUN docker-php-ext-configure pdo pdo_pgsql
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
@@ -16,6 +15,7 @@ RUN apt-get install -y nodejs
 WORKDIR /app
 
 COPY . .
+
 RUN composer install
 RUN npm ci
 RUN npm run build
@@ -24,16 +24,14 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-RUN > database/database.sqlite
+# Копируем тестовый файл
+COPY check-real-connection.php /app/
 
-# Копируем debug файл
-COPY debug-db.php /app/debug-db.php
-
-# Обновляем CMD
+# Запускаем тест + миграции
 CMD bash -c "\
-    echo '=== DEBUG DATABASE ==='; \
-    php debug-db.php; \
-    echo '=== RUNNING MIGRATIONS ==='; \
+    echo '=== TESTING REAL CONNECTION ==='; \
+    php check-real-connection.php; \
+    echo '=== RUNNING LARAVEL MIGRATIONS ==='; \
     php artisan migrate:fresh --seed --force; \
     echo '=== STARTING SERVER ==='; \
     php artisan serve --host=0.0.0.0 --port=10000"
