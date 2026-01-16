@@ -26,4 +26,14 @@ RUN php artisan view:cache
 
 RUN > database/database.sqlite
 
-CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$1000"]
+# Копируем debug файл
+COPY debug-db.php /app/debug-db.php
+
+# Обновляем CMD
+CMD bash -c "\
+    echo '=== DEBUG DATABASE ==='; \
+    php debug-db.php; \
+    echo '=== RUNNING MIGRATIONS ==='; \
+    php artisan migrate:fresh --seed --force; \
+    echo '=== STARTING SERVER ==='; \
+    php artisan serve --host=0.0.0.0 --port=10000"
