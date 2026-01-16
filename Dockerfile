@@ -24,4 +24,16 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-CMD ["bash", "-c", "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=10000"]
+CMD ["bash", "-c", "\
+    echo 'APP_ENV=production' > .env && \
+    echo 'APP_DEBUG=false' >> .env && \
+    echo 'DB_CONNECTION=pgsql' >> .env && \
+    echo \"DB_HOST=\$DB_HOST\" >> .env && \
+    echo \"DB_PORT=\$DB_PORT\" >> .env && \
+    echo \"DB_DATABASE=\$DB_DATABASE\" >> .env && \
+    echo \"DB_USERNAME=\$DB_USERNAME\" >> .env && \
+    echo \"DB_PASSWORD=\$DB_PASSWORD\" >> .env && \
+    echo '=== .env created ===' && \
+    cat .env && \
+    php artisan migrate:fresh --seed --force && \
+    php artisan serve --host=0.0.0.0 --port=10000"]
