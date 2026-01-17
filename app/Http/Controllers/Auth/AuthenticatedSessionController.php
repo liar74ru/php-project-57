@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Laracasts\Flash\Flash;
+//use Laracasts\Flash\Flash;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        flash()->success('Вы вышли из системы!');
+        flash()->info('Вы вышли из системы!');
 
         return redirect('/');
     }

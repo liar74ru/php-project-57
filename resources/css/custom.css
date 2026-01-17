@@ -112,6 +112,20 @@ body {
     background-color: #1d4ed8;
 }
 
+.auth-button-grey {
+    text-decoration: none;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #b5b5ba;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.auth-button-grey:hover {
+    background-color: #646465;
+}
+
 /* ========== ГЕРОЙ-СЕКЦИЯ ========== */
 
 .hero-section {

@@ -54,7 +54,7 @@ class ProfileController extends Controller
 
         $user->delete();
 
-        flash()->success('Вы успешно удалили свой Аккаунт!');
+        flash()->info('Вы успешно удалили свой Аккаунт!');
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

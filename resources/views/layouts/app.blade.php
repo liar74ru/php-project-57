@@ -17,7 +17,6 @@
     </head>
     <body class="font-sans antialiased">
     <div id="app">
-
         <!-- Подключаем верхнюю часть -->
         @include('layouts.partials.header')
 
@@ -26,7 +25,7 @@
             @include('flash::message')
             @yield('content')
         </main>
-
+    </div>
         <!-- Подключаем нижнюю часть -->
     @include('layouts.partials.footer')
     </body>
