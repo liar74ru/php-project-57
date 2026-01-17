@@ -45,6 +45,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        flash()->success("Поздравляю, " . $user->name . "! Вы успешно создали свой Аккаунт!");
+
         return redirect(route('home', absolute: false));
     }
 }
