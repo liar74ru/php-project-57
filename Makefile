@@ -1,7 +1,7 @@
 include ./compose.mk
 
 start:
-	php artisan serve --host 0.0.0.0
+	php artisan serve --host localhost
 
 start-frontend:
 	npm run dev

@@ -19,7 +19,7 @@
                 <!-- Для авторизованных -->
                 <span style="margin-right: 15px; color: #666;">
                 {{ Auth::user()->name }}
-            </span>
+                </span>
                 {{--            <a href="{{ route('dashboard') }}" class="nav-button">--}}
                 {{--                Панель--}}
                 {{--            </a>--}}
