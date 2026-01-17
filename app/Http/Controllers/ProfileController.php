@@ -32,6 +32,8 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        flash()->success('Вы успешно отредактировали свой Аккаунт!');
+
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
@@ -51,6 +53,8 @@ class ProfileController extends Controller
         Auth::logout();
 
         $user->delete();
+
+        flash()->success('Вы успешно удалили свой Аккаунт!');
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
