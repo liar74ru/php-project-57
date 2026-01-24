@@ -41,10 +41,10 @@ class TaskStatusController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+//    public function show(string $id)
+//    {
+//        //
+//    }
 
     /**
      * Show the form for editing the specified resource.
@@ -78,6 +78,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(string $id)
     {
+        //тут будет проверка на наличие удаляемого статуса у задачи, если установлен, то не удаляем
 
         TaskStatus::destroy($id);
         flash()->info('Статус удален!');
