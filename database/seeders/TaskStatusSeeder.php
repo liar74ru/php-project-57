@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 
 class TaskStatusSeeder extends Seeder
 {
+    use WithoutModelEvents;
     /**
      * Run the database seeds.
      */
