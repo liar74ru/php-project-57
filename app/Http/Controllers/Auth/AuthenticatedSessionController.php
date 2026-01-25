@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-//use Laracasts\Flash\Flash;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        flash()->success('Вы успешно Залогинились!');
+        flash()->success(__('You have successfully logged in!'));
 
         return redirect()->intended(route('home', absolute: false));
     }
@@ -45,7 +44,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        flash()->info('Вы вышли из системы!');
+        flash()->info( __('You have been logged out!'));
 
         return redirect('/');
     }

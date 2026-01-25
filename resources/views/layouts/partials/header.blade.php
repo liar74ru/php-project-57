@@ -1,36 +1,48 @@
-<!-- Фиксированный хедер -->
+<!-- Fixed header -->
 <header class="fixed-header">
     <div class="nav-container">
-        <!-- Логотип слева -->
+        <!-- Logo on the left -->
         <a href="{{ url('/') }}" class="nav-logo">
-            <span>Менеджер задач</span>
+            <span>{{ __('Task Manager')}}</span>
         </a>
 
-        <!-- Центральное меню -->
+        <!-- Central menu -->
         <div class="nav-center">
-            <a href="#" class="nav-center-item disabled">Задачи</a>
-            <a href="{{ route('task_statuses.index') }}" class="nav-center-item">Статусы</a>
-            <a href="#" class="nav-center-item disabled">Метки</a>
+            <a href="#" class="nav-center-item disabled">{{ __('Tasks')}}</a>
+            <a href="{{ route('task_statuses.index') }}" class="nav-center-item">{{ __('Statuses')}}</a>
+            <a href="#" class="nav-center-item disabled">{{ __('Labels')}}</a>
         </div>
-        <!-- Кнопки авторизации справа -->
+
+        <!-- Right section with language switcher and auth -->
         <div class="nav-auth">
+            <!-- Authentication buttons -->
             @auth
-                <!-- Для авторизованных -->
+                <!-- For authenticated users -->
                 <span style="margin-right: 15px; color: #666;">
-                {{ Auth::user()->name }}
+                    {{ Auth::user()->name }}
                 </span>
-                <a href="{{ route('profile.edit') }}" class="auth-button">Профиль</a>
+                <a href="{{ route('profile.edit') }}" class="auth-button">{{ __('Profile') }}</a>
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="auth-button">
-                        Выйти
+                        {{ __('Logout')}}
                     </button>
                 </form>
             @else
-                <!-- Для гостей -->
-                <a href="{{ route('login') }}" class="auth-button">Вход</a>
-                <a href="{{ route('register') }}" class="auth-button">Регистрация</a>
+                <!-- For guests -->
+                <a href="{{ route('login') }}" class="auth-button">{{ __('Login')}}</a>
+                <a href="{{ route('register') }}" class="auth-button">{{ __('Register')}}</a>
             @endauth
+            <div class="lang-buttons">
+                <a href="{{ route('locale.set', ['locale' => 'en']) }}"
+                   class="lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                    EN
+                </a>
+                <a href="{{ route('locale.set', ['locale' => 'ru']) }}"
+                   class="lang-btn {{ app()->getLocale() == 'ru' ? 'active' : '' }}">
+                    RU
+                </a>
+            </div>
         </div>
     </div>
 </header>

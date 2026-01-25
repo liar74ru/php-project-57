@@ -100,7 +100,7 @@ body {
 
 .auth-button {
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 400;
     padding: 8px 16px;
     border-radius: 4px;
     background-color: #3b82f6;
@@ -193,6 +193,40 @@ body {
     margin-bottom: 32px;
     line-height: 1.25;
     letter-spacing: -0.025em;
+}
+
+.lang-buttons {
+    display: flex;
+    margin-right: 15px;
+    gap: 5px;
+}
+
+.lang-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 32px;
+    border: 1px solid #dee2e6;
+    background: #f8f9fa;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.lang-btn.active {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
 }
 
 /* ========== СТИЛИ ДЛЯ НЕАКТИВНЫХ ЭЛЕМЕНТОВ ========== */

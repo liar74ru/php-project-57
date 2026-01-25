@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Менеджер задач')
+@section('title', __('Task Manager'))
 
 @section('content')
     <section class="hero-section">
         <div class="hero-container">
             <div class="hero-content">
-            <div class="col">
-                <h1 class="h1 mb-5">Создать статус</h1>
-            </div>
+                <div class="col">
+                    <h1 class="h1 mb-5">{{ __('Create status') }}</h1>
+                </div>
 
                 @auth
                     <form method="POST" action="{{ route('task_statuses.store') }}">
@@ -16,7 +16,7 @@
 
                         <div class="mb-3">
                             <div>
-                                <label for="name">Имя</label>
+                                <label for="name">{{ __('Name') }}</label>
                             </div>
                             <div class="mt-2">
                                 <input class="form-control w-50 @error('name') is-invalid @enderror"
@@ -35,19 +35,19 @@
                             </div>
                         </div>
                         <button class="auth-button">
-                            Создать
+                            {{ __('Create') }}
                         </button>
-                        <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">Отмена</a>
+                        <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">{{ __('Cancel') }}</a>
                     </form>
                 @else
                     <hr>
                     <div>
-                        <h2 class="h3 mb-0">Вы должны быть авторизованны!</h2>
+                        <h2 class="h3 mb-0">{{ __('You must be logged in!') }}</h2>
                     </div>
                 @endauth
 
+            </div>
         </div>
-    </div>
     </section>
 
 @endsection

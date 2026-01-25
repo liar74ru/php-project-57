@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Менеджер задач')
+@section('title', 'Task Manager')
 
 @section('content')
     <section class="hero-section">
         <div class="hero-container">
             <div class="hero-content">
                 <h1 class="hero-title">
-                    Привет от Хекслета!
+                    {{ __('Hello from Hexlet!')}}
                 </h1>
                 <p class="hero-subtitle">
-                    Это простой менеджер задач на Laravel
+                    {{ __('This is a simple task manager built on Laravel')}}
                 </p>
                 <a href="https://hexlet.io" class="hero-button" target="_blank">
-                    Нажми меня
+                    {{ __('Click me')}}
                 </a>
             </div>
         </div>

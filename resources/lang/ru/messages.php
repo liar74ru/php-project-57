@@ -32,4 +32,5 @@ return [
         'required' => 'Поле :attribute обязательно для заполнения.',
         'unique' => 'Такой :attribute уже существует.',
     ],
+    'Profile Information' => 'Информация профиля',
 ];
