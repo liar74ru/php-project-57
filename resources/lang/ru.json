@@ -53,5 +53,21 @@
     "Edit Status": "Изменение Статуса",
     "You must be logged in!": "Вы должны быть авторизованны!",
     "Create": "Создать",
-    "Already registered?": "Уже зарегистрированы?"
+    "Already registered?": "Уже зарегистрированы?",
+    "Create task": "Создать задачу",
+    "Status": "Статус",
+    "Author": "Автор",
+    "Assignee": "Исполнитель",
+    "Apply": "Применить",
+    "Not assigned": "Не назначена",
+    "Unknown": "Неизвестно",
+    "No tasks found": "Задачи не найдены",
+    "Showing": "Показано",
+    "to": "по",
+    "of": "из",
+    "results": "результатов",
+    "Delete task «:name»?": "Удалить задачу «:name»?",
+    "Pagination Navigation": "Навигация по страницам",
+    "Previous": "Назад",
+    "Next": "Вперед"
 }

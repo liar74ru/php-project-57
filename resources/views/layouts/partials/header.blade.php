@@ -8,7 +8,7 @@
 
         <!-- Central menu -->
         <div class="nav-center">
-            <a href="#" class="nav-center-item disabled">{{ __('Tasks')}}</a>
+            <a href="{{ route('tasks.index') }}" class="nav-center-item">{{ __('Tasks')}}</a>
             <a href="{{ route('task_statuses.index') }}" class="nav-center-item">{{ __('Statuses')}}</a>
             <a href="#" class="nav-center-item disabled">{{ __('Labels')}}</a>
         </div>
