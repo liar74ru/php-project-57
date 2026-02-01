@@ -1,3 +1,4 @@
+следуюшая, дай переводы только тех что есть на странице и которые ты еще не давал
 @extends('layouts.app')
 
 @section('title', __('Task Manager'))
@@ -19,46 +20,25 @@
                     <!-- Форма с фильтрами -->
                     <form method="GET" action="{{ route('tasks.index') }}" class="d-flex align-items-end gap-2 flex-grow-1">
                         <!-- Статус -->
-                        <div style="width: 22%; min-width: 160px;">
-                            <label for="status_id" class="form-label small mb-1">{{ __('Status') }}</label>
-                            <select class="form-select form-select-sm" name="filter[status_id]" id="status_id">
-                                <option value="">{{ __('Status') }}</option>
-                                @foreach($statuses as $status)
-                                    <option value="{{ $status->id }}"
-                                        {{ request('filter.status_id') == $status->id ? 'selected' : '' }}>
-                                        {{ $status->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-filter-select
+                            name="filter[status_id]"
+                            :label="__('Status')"
+                            :options="$statuses"
+                        />
 
                         <!-- Автор -->
-                        <div style="width: 22%; min-width: 160px;">
-                            <label for="created_by_id" class="form-label small mb-1">{{ __('Author') }}</label>
-                            <select class="form-select form-select-sm" name="filter[created_by_id]" id="created_by_id">
-                                <option value="">{{ __('Author') }}</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        {{ request('filter.created_by_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-filter-select
+                            name="filter[created_by_id]"
+                            :label="__('Author')"
+                            :options="$users"
+                        />
 
                         <!-- Исполнитель -->
-                        <div style="width: 22%; min-width: 160px;">
-                            <label for="assigned_to_id" class="form-label small mb-1">{{ __('Assignee') }}</label>
-                            <select class="form-select form-select-sm" name="filter[assigned_to_id]" id="assigned_to_id">
-                                <option value="">{{ __('Assignee') }}</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        {{ request('filter.assigned_to_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-filter-select
+                            name="filter[assigned_to_id]"
+                            :label="__('Assignee')"
+                            :options="$users"
+                        />
 
                         <!-- Кнопка "Применить" -->
                         <div style="padding-top: 1.6rem;">
@@ -140,7 +120,7 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                            <a href="{{ route('tasks.edit', $task->id) }}"
+                                            <a href="{{ route('tasks.edit', $task) }}"
                                                class="btn btn-outline-secondary btn-sm rounded">
                                                 <i class="bi bi-pencil me-1"></i> {{ __('Edit') }}
                                             </a>
@@ -164,73 +144,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Пагинация -->
-        @if($tasks->hasPages())
-            <div class="mt-4">
-                <nav aria-label="{{ __('Pagination Navigation') }}">
-                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                        <div class="mb-3 mb-md-0">
-                            <p class="small text-muted mb-0">
-                                {{ __('Showing') }}
-                                <span class="fw-semibold">{{ $tasks->firstItem() }}</span>
-                                {{ __('to') }}
-                                <span class="fw-semibold">{{ $tasks->lastItem() }}</span>
-                                {{ __('of') }}
-                                <span class="fw-semibold">{{ $tasks->total() }}</span>
-                                {{ __('results') }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <ul class="pagination pagination-sm mb-0">
-                                {{-- Previous Page Link --}}
-                                @if($tasks->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">
-                                            <i class="bi bi-chevron-left"></i>
-                                        </span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $tasks->previousPageUrl() }}" rel="prev">
-                                            <i class="bi bi-chevron-left"></i>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                {{-- Pagination Elements --}}
-                                @foreach(range(1, $tasks->lastPage()) as $page)
-                                    @if($page == $tasks->currentPage())
-                                        <li class="page-item active" aria-current="page">
-                                            <span class="page-link">{{ $page }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $tasks->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endif
-                                @endforeach
-
-                                {{-- Next Page Link --}}
-                                @if($tasks->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $tasks->nextPageUrl() }}" rel="next">
-                                            <i class="bi bi-chevron-right"></i>
-                                        </a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">
-                                            <i class="bi bi-chevron-right"></i>
-                                        </span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        @endif
+        <x-pagination :paginator="$tasks" />
     </div>
 @endsection

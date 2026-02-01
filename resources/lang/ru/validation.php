@@ -16,6 +16,7 @@ return [
         'name' => 'имя',
         'description' => 'описание',
         'password' => 'пароль',
-        'password_confirmation' => 'Подтверждение пароля'
+        'password_confirmation' => 'Подтверждение пароля',
+        'status_id' => 'cтатус'
     ],
 ];

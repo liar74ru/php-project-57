@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Controllers;
+namespace Tests\Http\Controllers;
 
-use Tests\TestCase;
 use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
@@ -16,7 +16,7 @@ class TaskStatusControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee('Статусы');
+        $response->assertSee(__('Status'));
     }
 
     public function testCreate()
@@ -90,7 +90,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertViewHas('task_status', $taskStatus);
 
         // 6. Проверяем, что видим имя статуса на странице
-        $response->assertSee('Изменение Статуса');
+        $response->assertSee(__('Edit Status'));
     }
 
     public function testUpdateOk()

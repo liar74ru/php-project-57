@@ -38,7 +38,7 @@
                         <button class="auth-button">
                             {{ __('Edit') }}
                         </button>
-                        <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">__('Cancel')</a>
+                        <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">{{__('Cancel')}}</a>
                     </form>
                 @else
                     <hr>

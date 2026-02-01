@@ -79,7 +79,12 @@ class TaskStatusController extends Controller
     public function destroy(string $id)
     {
         //тут будет проверка на наличие удаляемого статуса у задачи, если установлен, то не удаляем
+        $taskStatus = TaskStatus::findOrFail($id);
 
+        if ($taskStatus->tasks()->exists()) {
+            flash()->error('Не удалось удалить статус');
+            return redirect(route('task_statuses.index'));
+        }
         TaskStatus::destroy($id);
         flash()->info('Статус удален!');
         return redirect(route('task_statuses.index'));
