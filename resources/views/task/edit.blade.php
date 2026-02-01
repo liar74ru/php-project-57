@@ -75,15 +75,13 @@
                                 <label for="labels">{{ __('Labels') }}</label>
                             </div>
                             <div>
-                                <select class="rounded border-gray-300 w-1/3 h-32" name="labels[]" id="labels" multiple>
-                                    @isset($labels)
-                                        @foreach($labels as $label)
-                                            <option value="{{ $label->id }}"
-                                                {{ in_array($label->id, old('labels', $task->labels->pluck('id')->toArray() ?? [])) ? 'selected' : '' }}>
-                                                {{ $label->name }}
-                                            </option>
-                                        @endforeach
-                                    @endisset
+                                <select class="rounded border-gray-300 w-1/3" name="labels[]" multiple>
+                                    @foreach($allLabels as $label)
+                                        <option value="{{ $label->id }}"
+                                            {{ in_array($label->id, old('labels', $attachedLabelIds)) ? 'selected' : '' }}>
+                                            {{ $label->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
 

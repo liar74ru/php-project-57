@@ -10,7 +10,7 @@
         <div class="nav-center">
             <a href="{{ route('tasks.index') }}" class="nav-center-item">{{ __('Tasks')}}</a>
             <a href="{{ route('task_statuses.index') }}" class="nav-center-item">{{ __('Statuses')}}</a>
-            <a href="#" class="nav-center-item disabled">{{ __('Labels')}}</a>
+            <a href="{{ route('label.index') }}" class="nav-center-item">{{ __('Labels')}}</a>
         </div>
 
         <!-- Right section with language switcher and auth -->

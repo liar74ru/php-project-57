@@ -97,5 +97,8 @@
     "Sort by": "Сортировать по",
     "Ascending": "По возрастанию",
     "Descending": "По убыванию",
-    "No labels": "Меток нет"
+    "No labels": "Меток нет",
+    "Label": "Метка",
+    "Create label": "Создать метку",
+    "Edit label": "Изменить метку"
 }

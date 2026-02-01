@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -11,6 +12,10 @@ use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +34,8 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::all();
         $users = User::all();
-        return view('task.create', compact('statuses', 'users'));
+        $labels = Label::all();
+        return view('task.create', compact('statuses', 'users', 'labels'));
     }
 
     /**
@@ -37,19 +43,32 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        // Валидация основных полей
+        $taskData = $request->validate([
             'name' => 'required|string|max:255|unique:tasks',
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id'
+            'assigned_to_id' => 'nullable|exists:users,id',
         ]);
 
-        $data['created_by_id'] = Auth::id();
+        // Валидация меток отдельно
+        $labelsData = $request->validate([
+            'labels' => 'nullable|array',
+            'labels.*' => 'integer|exists:labels,id',
+        ]);
 
-        Task::create($data);
+        // Добавляем создателя
+        $taskData['created_by_id'] = Auth::id();
+
+        // Создаем задачу
+        $task = Task::create($taskData);
+
+        // Прикрепляем метки
+        if (!empty($labelsData['labels'])) {
+            $task->labels()->attach($labelsData['labels']);
+        }
 
         flash()->success('Задача создана!');
-
         return redirect()->route('tasks.index');
     }
 
@@ -58,7 +77,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('task.show', compact('task'));
+        $task->load(['labels', 'status', 'creator', 'assignee']);
+        $labels = Label::all();
+        return view('task.show', compact('task', 'labels'));
     }
 
     /**
@@ -66,9 +87,26 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        // Жадная загрузка отношений задачи
+        $task->load(['status', 'creator', 'assignee', 'labels']);
+
+        // Все доступные метки для выбора в форме
+        $allLabels = Label::orderBy('name')->get();
+
+        // ID уже прикреплённых меток (для pre-select в форме)
+        $attachedLabelIds = $task->labels->pluck('id')->toArray();
+
+        // Данные для выпадающих списков
         $statuses = TaskStatus::all();
         $users = User::all();
-        return view('task.edit', compact('task', 'statuses', 'users'));
+
+        return view('task.edit', compact(
+            'task',
+            'allLabels',
+            'attachedLabelIds',
+            'statuses',
+            'users'
+        ));
     }
 
     /**
@@ -82,7 +120,7 @@ class TaskController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('tasks')->ignore($task->id)
+                Rule::unique('tasks')->ignore($task->id, 'id'),
             ],
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
@@ -90,6 +128,14 @@ class TaskController extends Controller
         ]);
 
         $task->update($data);
+
+        $labelsData = $request->validate([
+            'labels' => 'nullable|array',
+            'labels.*' => 'integer|exists:labels,id',
+        ]);
+
+        // Прикрепляем метки
+        $task->labels()->sync($labelsData['labels'] ?? []);
 
         flash()->success('Задача изменена!');
 

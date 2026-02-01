@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class TaskStatusController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -78,14 +82,14 @@ class TaskStatusController extends Controller
      */
     public function destroy(string $id)
     {
-        //тут будет проверка на наличие удаляемого статуса у задачи, если установлен, то не удаляем
         $taskStatus = TaskStatus::findOrFail($id);
 
         if ($taskStatus->tasks()->exists()) {
             flash()->error('Не удалось удалить статус');
             return redirect(route('task_statuses.index'));
         }
-        TaskStatus::destroy($id);
+
+        $taskStatus->delete();
         flash()->info('Статус удален!');
         return redirect(route('task_statuses.index'));
     }

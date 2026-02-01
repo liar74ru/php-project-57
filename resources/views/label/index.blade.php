@@ -6,12 +6,12 @@
     <div class="container py-5 px-20">
         <div class="row mb-5">
             <div class="col">
-                <h1 class="h3 mb-0">{{ __('Statuses') }}</h1>
+                <h1 class="h3 mb-0">{{ __('Label') }}</h1>
             </div>
             <div class="col-auto">
                 @auth
                     <!-- Для авторизованных -->
-                    <a href="{{ route('task_statuses.create') }}" class="auth-button">{{ __('Create status') }}</a>
+                    <a href="{{ route('label.create') }}" class="auth-button">{{ __('Create label') }}</a>
                 @endauth
 
             </div>
@@ -24,6 +24,7 @@
                         <tr>
                             <th class="ps-4" style="width: 60px;">{{ __('ID') }}</th>
                             <th>{{ __('Name') }}</th>
+                            <th>{{ __('Description') }}</th>
                             <th>{{ __('Creation date') }}</th>
                             @auth
                                 <th class="text-end pe-4">{{ __('Actions') }}</th>
@@ -31,33 +32,33 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($statuses as $status)
+                        @foreach($labels as $label)
                             <tr>
-                                <td class="ps-4">{{ $status->id }}</td>
+                                <td class="ps-4">{{ $label->id }}</td>
                                 <td>
-                                    <span class="badge rounded-pill"
-                                          style="background-color: {{ $status->color ?? '#6c757d' }}; padding: 0.5em 1em;">
-                                        {{ $status->name }}
-                                    </span>
+                                    <x-badge>{{ $label->name }}</x-badge>
                                 </td>
                                 <td>
-                                    {{ $status->created_at->format('d.m.Y') }}
+                                    {{ $label->description }}
+                                </td>
+                                <td>
+                                    {{ $label->created_at->format('d.m.Y') }}
                                 </td>
                                 @auth
                                     <td class="text-end pe-4">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('task_statuses.edit', $status->id) }}"
+                                            <a href="{{ route('label.edit', $label->id) }}"
                                                class="btn btn-outline-secondary btn-sm rounded me-2">
                                                 <i class="bi bi-pencil"></i> {{ __('Edit') }}
                                             </a>
                                             <form method="POST"
-                                                  action="{{ route('task_statuses.destroy', $status->id) }}"
+                                                  action="{{ route('label.destroy', $label->id) }}"
                                                   class="d-inline m-0">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
                                                         class="btn btn-outline-danger btn-sm rounded"
-                                                        onclick="return confirm('{{ __('Delete status «:name»?', ['name' => $status->name]) }}')">
+                                                        onclick="return confirm('{{ __('Delete status «:name»?', ['name' => $label->name]) }}')">
                                                     <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
                                                 </button>
                                             </form>

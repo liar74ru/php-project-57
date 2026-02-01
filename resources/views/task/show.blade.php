@@ -17,10 +17,11 @@
                 <p><span class="font-black">{{ __('Description') }}:</span> {{ $task->description }}</p>
                 <p><span class="font-black">{{ __('Labels') }}:</span></p>
                 <div>
-                    <x-badge>документация</x-badge>
-                    <x-badge>ошибка</x-badge>
-                    <x-badge>дубликат</x-badge>
-                    <x-badge>доработка</x-badge>
+                    @isset($task->labels)
+                        @foreach($task->labels as $label)
+                            <x-badge>{{ $label->name }}</x-badge>
+                        @endforeach
+                    @endisset
                 </div>
             </div>
         </div>
