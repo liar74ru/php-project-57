@@ -21,12 +21,18 @@ class TaskStatusControllerTest extends TestCase
 
     public function testCreate()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         $response = $this->get('/task_statuses/create');
         $response->assertStatus(200);
     }
 
     public function testStoreCreateNewTaskStatus()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         // 1. Подготавливаем данные для создания
         $data = [
             'name' => 'Новый статус'
@@ -45,6 +51,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testStoreNotCreateNewTaskStatus()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         // 1. Пытаемся создать статус без имени
         $response = $this->post('/task_statuses', [
             'name' => '' // Пустое имя
@@ -59,6 +68,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testStoreSomeCreateTaskStatus()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         $data = [
             'name' => 'Новый статус'
         ];
@@ -72,6 +84,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testEditOk()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         // 1. Создаем тестовый статус
         $taskStatus = TaskStatus::create([
             'name' => 'Статус для редактирования'
@@ -95,6 +110,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testUpdateOk()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         $taskStatus = TaskStatus::create([
             'name' => 'Статус для редактирования'
         ]);
@@ -126,6 +144,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testDeleteOk()
     {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
         $taskStatus = TaskStatus::create([
             'name' => 'Статус для удаления'
         ]);
