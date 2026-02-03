@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Controllers;
+namespace Http\Controllers;
 
 use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -66,7 +66,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseCount('task_statuses', 0);
     }
 
-    public function testStoreSomeCreateTaskStatus()
+    public function testStoreSomeNameTaskStatus()
     {
         $user = $this->createTestUser();
         $this->actingAs($user);
@@ -157,5 +157,34 @@ class TaskStatusControllerTest extends TestCase
         $response->assertRedirect('/task_statuses');
 
         $this->assertDatabaseCount('task_statuses', 0);
+    }
+
+    public function testDeleteUseStatus()
+    {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
+        $taskStatus = TaskStatus::create([
+            'name' => 'Статус для удаления'
+        ]);
+
+        $id = $taskStatus->id;
+
+        $this->createTask([
+            'status_id' => $id
+        ]);
+
+        $initialCount = TaskStatus::count();
+
+        $response = $this->delete("/task_statuses/{$taskStatus->id}");
+
+        $response->assertRedirect('/task_statuses');
+
+        $this->assertDatabaseHas('task_statuses', [
+            'id' => $id,
+            'name' => 'Статус для удаления'
+        ]);
+
+        $this->assertDatabaseCount('task_statuses', $initialCount);
     }
 }

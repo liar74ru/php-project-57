@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Controllers;
+namespace Http\Controllers;
 
+use App\Models\Label;
 use App\Models\Task;
-use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -183,5 +183,57 @@ class TaskControllerTest extends TestCase
 
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+    }
+
+    public function testStoreCreateNewTaskWithLabels()
+    {
+        $user = $this->createTestUser();
+        $status = $this->createTaskStatus();
+
+        // Создаем несколько меток
+        $label1 = Label::create(['name' => 'Важная']);
+        $label2 = Label::create(['name' => 'Срочно']);
+        $label3 = Label::create(['name' => 'Баг']);
+
+        // Данные для создания задачи с метками
+        $taskData = [
+            'name' => 'New Task With Labels',
+            'description' => 'Test Description With Labels',
+            'status_id' => $status->id,
+            'assigned_to_id' => $user->id,
+            'labels' => [$label1->id, $label2->id] // Прикрепляем 2 метки из 3
+        ];
+
+        $this->actingAs($user);
+
+        $response = $this->post(route('tasks.store'), $taskData);
+
+        $response->assertRedirect(route('tasks.index'));
+
+        // Проверяем, что задача создалась
+        $task = Task::where('name', 'New Task With Labels')->first();
+        $this->assertNotNull($task);
+
+        // Проверяем, что метки прикрепились
+        $this->assertCount(2, $task->labels);
+        $this->assertTrue($task->labels->contains('name', 'Важная'));
+        $this->assertTrue($task->labels->contains('name', 'Срочно'));
+        $this->assertFalse($task->labels->contains('name', 'Баг')); // Эта не должна прикрепиться
+
+        // Проверяем связи в pivot таблице
+        $this->assertDatabaseHas('label_task', [
+            'task_id' => $task->id,
+            'label_id' => $label1->id,
+        ]);
+
+        $this->assertDatabaseHas('label_task', [
+            'task_id' => $task->id,
+            'label_id' => $label2->id,
+        ]);
+
+        $this->assertDatabaseMissing('label_task', [
+            'task_id' => $task->id,
+            'label_id' => $label3->id,
+        ]);
     }
 }

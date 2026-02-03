@@ -32,7 +32,7 @@ abstract class TestCase extends BaseTestCase
         return Task::factory()->create(array_merge([
             'status_id' => $status->id,
             'assigned_to_id' => $user->id,
-            'created_by_id' => $user->id,
+            'created_by_id' => $user->id
         ], $attributes));
     }
 }
