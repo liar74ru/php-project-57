@@ -45,7 +45,6 @@ jobs:
             -Dsonar.organization=liar74ru
             -Dsonar.projectName=php-project-57
             -Dsonar.sources=app
-#            ,database,config,routes
             -Dsonar.tests=tests
             -Dsonar.php.coverage.reportPaths=build/logs/clover.xml
             -Dsonar.qualitygate.wait=true
