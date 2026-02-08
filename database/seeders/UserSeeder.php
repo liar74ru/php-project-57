@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -15,7 +14,7 @@ class UserSeeder extends Seeder
     {
         User::factory(10)->create();
 
-        $user = User::firstOrCreate(
+        User::firstOrCreate(
             ['email' => 'q@q'],
             [
                 'name' => 'Test User',
