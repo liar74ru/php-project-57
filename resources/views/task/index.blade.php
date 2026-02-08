@@ -3,7 +3,7 @@
 @section('title', __('Task Manager'))
 
 @section('content')
-    <div class="grid col-span-full">
+    <div class="container py-5 px-20">
         <!-- Заголовок и кнопка создания -->
         <div class="row mb-4">
             <div class="col">
@@ -51,7 +51,7 @@
                     </form>
 
                     <!-- Кнопка "Создать задачу" -->
-                    <div style="padding-top: 1.6rem;">
+                    <div class="col-auto">
                         @auth
                             <a href="{{ route('tasks.create') }}" class="auth-button">
                                 <i class="bi bi-plus-circle me-1"></i> {{ __('Create task') }}
