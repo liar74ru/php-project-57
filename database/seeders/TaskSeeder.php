@@ -96,9 +96,9 @@ class TaskSeeder extends Seeder
             ];
 
             // Создаем задачи
-            foreach ($tasks as $index => $taskData) {
+            foreach ($tasks as $taskData) {
                 $creator = $users->random();
-                $assignee = rand(0, 1) ? $users->random() : null; // 50% шанс что задача назначена
+                $assignee = rand(0, 1) ? $users->random() : null; // 50% шанс, что задача назначена
 
                 Task::create([
                     'name' => $taskData['name'],

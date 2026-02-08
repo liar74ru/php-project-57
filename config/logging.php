@@ -5,6 +5,11 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
+// Выносим повторяющиеся пути логов в переменные
+$laravelLogPath = storage_path('logs/laravel.log');
+$logLevel = env('LOG_LEVEL', 'debug');
+$replacePlaceholders = true;
+
 return [
 
     /*
@@ -60,17 +65,17 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'replace_placeholders' => true,
+            'path' => $laravelLogPath,
+            'level' => $logLevel,
+            'replace_placeholders' => $replacePlaceholders,
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
+            'path' => $laravelLogPath,
+            'level' => $logLevel,
             'days' => env('LOG_DAILY_DAYS', 14),
-            'replace_placeholders' => true,
+            'replace_placeholders' => $replacePlaceholders,
         ],
 
         'slack' => [
@@ -79,24 +84,24 @@ return [
             'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),
             'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
             'level' => env('LOG_LEVEL', 'critical'),
-            'replace_placeholders' => true,
+            'replace_placeholders' => $replacePlaceholders,
         ],
 
         'papertrail' => [
             'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => $logLevel,
             'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
 
         'stderr' => [
             'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => $logLevel,
             'handler' => StreamHandler::class,
             'handler_with' => [
                 'stream' => 'php://stderr',
@@ -107,15 +112,15 @@ return [
 
         'syslog' => [
             'driver' => 'syslog',
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => $logLevel,
             'facility' => env('LOG_SYSLOG_FACILITY', LOG_USER),
-            'replace_placeholders' => true,
+            'replace_placeholders' => $replacePlaceholders,
         ],
 
         'errorlog' => [
             'driver' => 'errorlog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'replace_placeholders' => true,
+            'level' => $logLevel,
+            'replace_placeholders' => $replacePlaceholders,
         ],
 
         'null' => [
@@ -124,7 +129,7 @@ return [
         ],
 
         'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
+            'path' => $laravelLogPath,
         ],
 
     ],
