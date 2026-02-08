@@ -1,7 +1,10 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
+        <div class="mb-4">
 
+        </div>
+        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
