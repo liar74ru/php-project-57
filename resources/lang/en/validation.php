@@ -1,13 +1,22 @@
 <?php
 
 return [
-    'required' => 'The :attribute field is required.',
-    'unique' => 'The :attribute has already been taken.',
+    'required' => 'Поле :attribute обязательно для заполнения.',
+    'unique' => 'Такой :attribute уже существует.',
     'max' => [
-        'string' => 'The :attribute must not be greater than :max characters.',
+        'string' => 'Поле :attribute не должно превышать :max символов.',
+    ],
+    'min' => [
+        'numeric' => 'Поле :attribute должно быть не меньше :min.',
+        'file' => 'Размер файла в поле :attribute должен быть не меньше :min килобайт.',
+        'string' => 'Поле :attribute должно содержать не менее :min символов.',
+        'array' => 'Поле :attribute должно содержать не менее :min элементов.',
     ],
     'attributes' => [
-        'name' => 'name',
-        'description' => 'description',
+        'name' => 'имя',
+        'description' => 'описание',
+        'password' => 'пароль',
+        'password_confirmation' => 'Подтверждение пароля',
+        'status_id' => 'cтатус'
     ],
 ];
