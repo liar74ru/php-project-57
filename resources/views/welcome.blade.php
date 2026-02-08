@@ -5,7 +5,7 @@
 @section('content')
         <div class="container-xxl py-5 px-20">
             <h1 class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">
-                {{ __('Hello from Hexlet!')}}
+                Привет от Хекслета!
             </h1>
 
             <!-- Дублируем русский текст для теста Hexlet -->
