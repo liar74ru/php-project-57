@@ -17,18 +17,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('styles')
     </head>
-    <body class="font-sans antialiased">
+    <body>
     <div id="app">
-        <!-- Подключаем верхнюю часть -->
+        <!-- Header -->
         @include('layouts.partials.header')
 
+        <!-- Flash сообщения -->
+        @include('flash::message')
+
         <!-- Основной контент -->
-        <main class="main-content">
-            @include('flash::message')
-            @yield('content')
+        <main class="py-4">
+            <div class="container">
+                @yield('content')
+            </div>
         </main>
+
+        <!-- Footer -->
+        @include('layouts.partials.footer')
     </div>
-        <!-- Подключаем нижнюю часть -->
-    @include('layouts.partials.footer')
-    </body>
 </html>

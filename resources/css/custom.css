@@ -106,6 +106,17 @@ body {
     background-color: #3b82f6;
     color: white;
     transition: background-color 0.2s;
+    /* Фиксированная высота */
+    height: 40px; /* или другое значение */
+
+    /* Центрирование текста по вертикали */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Чтобы кнопка не сжималась */
+    min-width: fit-content;
+    box-sizing: border-box;
 }
 
 .auth-button:hover {
@@ -114,12 +125,23 @@ body {
 
 .auth-button-grey {
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 400;
     padding: 8px 16px;
     border-radius: 4px;
     background-color: #b5b5ba;
     color: white;
     transition: background-color 0.2s;
+
+    height: 40px; /* или другое значение */
+
+    /* Центрирование текста по вертикали */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Чтобы кнопка не сжималась */
+    min-width: fit-content;
+    box-sizing: border-box;
 }
 
 .auth-button-grey:hover {

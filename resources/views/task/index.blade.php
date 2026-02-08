@@ -1,10 +1,9 @@
-следуюшая, дай переводы только тех что есть на странице и которые ты еще не давал
 @extends('layouts.app')
 
 @section('title', __('Task Manager'))
 
 @section('content')
-    <div class="container py-5 px-20">
+    <div class="grid col-span-full">
         <!-- Заголовок и кнопка создания -->
         <div class="row mb-4">
             <div class="col">
@@ -24,6 +23,7 @@
                             name="filter[status_id]"
                             :label="__('Status')"
                             :options="$statuses"
+                            :value="$currentValue['status_id'] ?? '' "
                         />
 
                         <!-- Автор -->
@@ -31,6 +31,7 @@
                             name="filter[created_by_id]"
                             :label="__('Author')"
                             :options="$users"
+                            :value="$currentValue['created_by_id']  ?? '' "
                         />
 
                         <!-- Исполнитель -->
@@ -38,6 +39,7 @@
                             name="filter[assigned_to_id]"
                             :label="__('Assignee')"
                             :options="$users"
+                            :value="$currentValue['assigned_to_id']  ?? '' "
                         />
 
                         <!-- Кнопка "Применить" -->

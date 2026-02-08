@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\Enums\FilterOperator;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
@@ -19,12 +22,23 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $statuses = TaskStatus::all();
-        $tasks = Task::paginate(15);
         $users = User::all();
-        return view('task.index', compact('tasks', 'statuses', 'users'));
+
+        $currentValue = $request->input('filter');
+
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id')
+            ])
+            ->defaultSort('id')
+            ->paginate(15);
+
+        return view('task.index', compact('tasks', 'statuses', 'users', 'currentValue'));
     }
 
     /**
