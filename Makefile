@@ -41,10 +41,10 @@ deploy:
 	git push heroku
 
 lint:
-	composer phpcs
+	composer exec -v phpcs
 
 lint-fix:
-	composer phpcbf
+	composer exec phpcbf
 
 ide-helper:
 	php artisan ide-helper:eloquent
