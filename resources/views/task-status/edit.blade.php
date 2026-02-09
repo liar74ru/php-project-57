@@ -24,8 +24,8 @@
                                        type="text"
                                        name="name"
                                        id="name"
-                                       value="{{ $task_status->name ?? old('name') }}"
-                                       required>
+                                       value="{{ old('name', $task_status->name) }}"
+                                       >
 
                                 {{-- Вывод ошибки под полем --}}
                                 @error('name')

@@ -11,7 +11,7 @@
             <div class="col-auto">
                 @auth
                     <!-- Для авторизованных -->
-                    <a href="{{ route('label.create') }}" class="auth-button">{{ __('Create label') }}</a>
+                    <a href="{{ route('labels.create') }}" class="auth-button">{{ __('Create label') }}</a>
                 @endauth
 
             </div>
@@ -47,12 +47,12 @@
                                 @auth
                                     <td class="text-end pe-4">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('label.edit', $label->id) }}"
+                                            <a href="{{ route('labels.edit', $label->id) }}"
                                                class="btn btn-outline-secondary btn-sm rounded me-2">
                                                 <i class="bi bi-pencil"></i> {{ __('Edit') }}
                                             </a>
                                             <form method="POST"
-                                                  action="{{ route('label.destroy', $label->id) }}"
+                                                  action="{{ route('labels.destroy', $label->id) }}"
                                                   class="d-inline m-0">
                                                 @csrf
                                                 @method('DELETE')

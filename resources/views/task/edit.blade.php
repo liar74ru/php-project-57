@@ -11,7 +11,7 @@
                 @auth
                     <form method="POST" action="{{ route('tasks.update', $task->id) }}">
                         @csrf
-                        @method('put')
+                        @method('patch')
                         <div class="flex flex-col">
                             <div>
                                 <label for="name">{{ __('Name') }}</label>

@@ -38,7 +38,7 @@ class TaskStatusController extends Controller
         ]);
 
         TaskStatus::create($data);
-        flash()->success('Статус создан Успешно!');
+        flash()->success('Статус успешно создан');
         return redirect(route('task_statuses.index'));
     }
 
@@ -68,11 +68,14 @@ class TaskStatusController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:task_statuses,name,' . $id
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.unique' => 'Статус с таким именем уже существует.'
         ]);
 
         $taskStatus->update($data);
 
-        flash()->success('Статус обновлен!');
+        flash()->success('Статус успешно изменён!');
 
         return redirect()->route('task_statuses.index');
     }
@@ -90,7 +93,7 @@ class TaskStatusController extends Controller
         }
 
         $taskStatus->delete();
-        flash()->info('Статус удален!');
+        flash()->info('Статус успешно удалён!');
         return redirect(route('task_statuses.index'));
     }
 }

@@ -10,13 +10,37 @@ class TaskStatusControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testIndex()
+    public function testIndexAsGuest()
     {
         $response = $this->get('task_statuses');
 
         $response->assertStatus(200);
 
         $response->assertSee(__('Status'));
+
+        $response->assertDontSee('Создать статус')
+            ->assertDontSee('Удалить')
+            ->assertDontSee('Изменить');
+
+        $response->assertDontSee(__('Create status'))
+            ->assertDontSee(__('Delete'))
+            ->assertDontSee(__('Edit'));
+    }
+
+    public function testIndexAsUser()
+    {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+        $this->createTaskStatus();
+
+        $response = $this->get('task_statuses');
+
+        $response->assertStatus(200);
+
+        $response->assertSee(__('Status'))
+            ->assertSee(__('Create status'))
+            ->assertSee(__('Delete'))
+            ->assertSee(__('Edit'));
     }
 
     public function testCreate()
@@ -47,6 +71,9 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', [
             'name' => 'Новый статус'
         ]);
+
+        $this->get('/task_statuses')
+            ->assertSee('Статус успешно создан');
     }
 
     public function testStoreNotCreateNewTaskStatus()
@@ -75,11 +102,14 @@ class TaskStatusControllerTest extends TestCase
             'name' => 'Новый статус'
         ];
 
-        TaskStatus::create($data);
+        $taskStatus = TaskStatus::create($data);
 
         $response = $this->post('/task_statuses', $data);
         $response->assertSessionHasErrors(['name']);
         $this->assertDatabaseCount('task_statuses', 1);
+
+        $this->get(route('task_statuses.edit', $taskStatus->id))
+            ->assertSee('Статус с таким именем уже существует');
     }
 
     public function testEditOk()
@@ -140,6 +170,39 @@ class TaskStatusControllerTest extends TestCase
         ]);
 
         $this->assertDatabaseCount('task_statuses', 1);
+
+        $this->get('/task_statuses')
+            ->assertSee('Статус успешно изменён');
+    }
+
+    public function testUpdateVoidError()
+    {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
+        $taskStatus = TaskStatus::create([
+            'name' => 'Статус для редактирования'
+        ]);
+
+        $id = $taskStatus->id;
+
+        // 1. Подготавливаем данные для обновления
+        $data = [
+            'name' => ''
+        ];
+
+        // Отправляем PATCH запрос с пустым именем
+        $response = $this->from(route('task_statuses.edit', $taskStatus->id))
+            ->patch("/task_statuses/{$taskStatus->id}", $data);
+
+        // Проверяем, что остаемся на той же странице (редирект обратно)
+        $response->assertRedirect(route('task_statuses.edit', $taskStatus->id));
+        $response->assertSessionHasErrors('name');
+
+        // Проверяем, что ошибка отображается
+        $this->get(route('task_statuses.edit', $taskStatus->id))
+            ->assertSee('Это обязательное поле');
+
     }
 
     public function testDeleteOk()
@@ -157,6 +220,9 @@ class TaskStatusControllerTest extends TestCase
         $response->assertRedirect('/task_statuses');
 
         $this->assertDatabaseCount('task_statuses', 0);
+
+        $this->get('/task_statuses')
+            ->assertSee('Статус успешно удалён');
     }
 
     public function testDeleteUseStatus()

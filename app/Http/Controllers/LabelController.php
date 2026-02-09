@@ -41,8 +41,8 @@ class LabelController extends Controller
         ]);
 
         Label::create($data);
-        flash()->success('Статус создан Успешно!');
-        return redirect(route('label.index'));
+        flash()->success('Метка успешно создана');
+        return redirect(route('labels.index'));
     }
 
     /**
@@ -71,8 +71,8 @@ class LabelController extends Controller
         ]);
 
         $label->update($data);
-        flash()->success('Метка успешно изменена!');
-        return redirect(route('label.index'));
+        flash()->success('Метка успешно изменена');
+        return redirect(route('labels.index'));
     }
 
     /**
@@ -84,10 +84,10 @@ class LabelController extends Controller
 
         if ($label->tasks()->exists()) {
             flash()->error('Не удалось удалить метку');
-            return redirect(route('label.index'));
+            return redirect(route('labels.index'));
         }
         $label->delete();
-        flash()->info('Метка удалена!');
-        return redirect(route('label.index'));
+        flash()->success('Метка успешно удалена');
+        return redirect(route('labels.index'));
     }
 }

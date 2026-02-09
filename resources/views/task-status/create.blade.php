@@ -23,8 +23,8 @@
                                        type="text"
                                        name="name"
                                        id="name"
-                                       value="{{ $name ?? old('name') }}"
-                                       required>
+                                       value="{{ old('name') }}"
+                                       >
 
                                 {{-- Вывод ошибки под полем --}}
                                 @error('name')

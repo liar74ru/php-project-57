@@ -15,6 +15,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -78,7 +82,7 @@ class TaskController extends Controller
             $task->labels()->attach($labelsData['labels']);
         }
 
-        flash()->success('Задача создана!');
+        flash()->success('Задача успешно создана!');
         return redirect()->route('tasks.index');
     }
 
@@ -147,7 +151,7 @@ class TaskController extends Controller
         // Прикрепляем метки
         $task->labels()->sync($labelsData['labels'] ?? []);
 
-        flash()->success('Задача изменена!');
+        flash()->success('Задача успешно изменена!');
 
         return redirect()->route('tasks.index');
     }
@@ -158,7 +162,7 @@ class TaskController extends Controller
     public function destroy(string $id)
     {
         Task::destroy($id);
-        flash()->info('Задача удалена!');
+        flash()->info('Задача успешно удалена!');
         return redirect(route('tasks.index'));
     }
 }

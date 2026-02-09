@@ -50,7 +50,7 @@
                         </div>
                     </form>
 
-                    <!-- Кнопка "Создать задачу" -->
+                    <!-- Кнопка "Соз дать задачу" -->
                     <div class="col-auto">
                         @auth
                             <a href="{{ route('tasks.create') }}" class="auth-button">

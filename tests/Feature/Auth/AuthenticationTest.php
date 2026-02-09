@@ -51,4 +51,77 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
         $response->assertRedirect('/');
     }
+
+    public function test_auth_works_full_cycle(): void
+    {
+        $userData = [
+            'name' => 'Toto',
+            'email' => 'toto@hexlet.io',
+            'password' => 'awesomeness',
+            'password_confirmation' => 'awesomeness',
+        ];
+
+        // Регистрация
+        $response = $this->post('/register', $userData);
+        $response->assertRedirect('/');
+        $this->assertAuthenticated();
+
+        // Выход
+        $response = $this->actingAs(User::where('email', 'toto@hexlet.io')->first())
+            ->post('/logout');
+        $response->assertRedirect('/');
+        $this->assertGuest();
+
+        // Вход
+        $response = $this->post('/login', [
+            'email' => 'toto@hexlet.io',
+            'password' => 'awesomeness',
+        ]);
+        $response->assertRedirect('/');
+        $this->assertAuthenticated();
+    }
+
+    public function test_register_form_validation(): void
+    {
+        $userData = [
+            'name' => 'Toto',
+            'email' => 'toto@hexlet.io',
+        ];
+
+        // Тест: короткий пароль (7 символов)
+        $response = $this->post('/register', array_merge($userData, [
+            'password' => 'awesome', // 7 символов
+            'password_confirmation' => 'awesome',
+        ]));
+
+        $response->assertSessionHasErrors(['password']);
+        $response->assertSessionHasErrors([
+            'password' => 'Пароль должен иметь длину не менее 8 символов'
+        ]);
+
+        // Тест: пароли не совпадают
+        $response = $this->post('/register', array_merge($userData, [
+            'password' => 'awesomeness',
+            'password_confirmation' => 'hexlet', // разные
+        ]));
+
+        $response->assertSessionHasErrors(['password']);
+        $response->assertSessionHasErrors([
+            'password' => 'Пароль и подтверждение не совпадают'
+        ]);
+    }
+
+    public function test_login_form_validation_shows_error_message(): void
+    {
+        // Тест: неверные учетные данные показывают сообщение
+        $response = $this->post('/login', [
+            'email' => 'wrong@example.com',
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertSessionHasErrors(['email']);
+        $response->assertSessionHasErrors([
+            'email' => 'Введите правильные имя пользователя и пароль'
+        ]);
+    }
 }

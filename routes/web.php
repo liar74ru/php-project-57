@@ -31,6 +31,6 @@ Route::middleware('auth')->group(function () use ($profilePath) {
 
 Route::resource('task_statuses', TaskStatusController::class);
 Route::resource('tasks', TaskController::class);
-Route::resource('label', LabelController::class);
+Route::resource('labels', LabelController::class);
 
 require __DIR__.'/auth.php';

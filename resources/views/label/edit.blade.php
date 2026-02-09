@@ -11,7 +11,7 @@
                 </div>
 
                 @auth
-                    <form method="POST" action="{{ route('label.update', $label->id) }}">
+                    <form method="POST" action="{{ route('labels.update', $label->id) }}">
                         @csrf
                         @method('patch')
 
@@ -49,7 +49,7 @@
                         <button class="auth-button">
                             {{ __('Edit') }}
                         </button>
-                        <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">{{__('Cancel')}}</a>
+                        <a href="{{ route('labels.index') }}" class="auth-button-grey">{{__('Cancel')}}</a>
                     </form>
                 @else
                     <hr>

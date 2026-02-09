@@ -11,7 +11,7 @@
                 </div>
 
                 @auth
-                    <form method="POST" action="{{ route('label.store') }}">
+                    <form method="POST" action="{{ route('labels.store') }}">
                         @csrf
                         <div class="flex flex-col">
                             <div>
@@ -41,7 +41,7 @@
 
                             <div class="mt-2">
                                 <button class="auth-button" type="submit">{{ __('Create') }}</button>
-                                <a href="{{ route('label.index') }}" class="auth-button-grey">{{ __('Cancel') }}</a>
+                                <a href="{{ route('labels.index') }}" class="auth-button-grey">{{ __('Cancel') }}</a>
                             </div>
                         </div>
                     </form>

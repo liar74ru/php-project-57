@@ -16,14 +16,17 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('styles')
+        @include('layouts.partials.header')
     </head>
     <body>
     <div id="app">
         <!-- Header -->
         @include('layouts.partials.header')
 
-        <!-- Flash сообщения -->
-        @include('flash::message')
+        <!-- Flash сообщения ПОД header -->
+        <div class="flash-messages-container mt-5 pt-4">
+            @include('flash::message')
+        </div>
 
         <!-- Основной контент -->
         <main class="py-4">
@@ -35,4 +38,5 @@
         <!-- Footer -->
         @include('layouts.partials.footer')
     </div>
+    </body>
 </html>

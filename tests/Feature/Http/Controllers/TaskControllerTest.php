@@ -12,17 +12,67 @@ class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testIndex()
+    public function testIndexAsUser()
     {
-        // Создаем несколько задач для отображения
-        $task1 = $this->createTask(['name' => 'Task 1']);
-        $task2 = $this->createTask(['name' => 'Task 2']);
+        $user = $this->createTestUser();
+        $this->actingAs($user);
 
-        $response = $this->get(route('tasks.index'));
+        // ТЕСТ 1: Пользователь НЕ видит кнопку Delete для чужих задач
+        $otherUser = User::factory()->create(['id' => 2]);
+        $this->createTask([
+            'name' => 'Task 2',
+            'created_by_id' => $otherUser->id
+        ]);
+
+        $response1 = $this->get(route('tasks.index'));
+        $response1->assertStatus(200);
+
+        // Проверяем, что задача отображается
+        $response1->assertSee('Task 2');
+
+        // Проверяем, что есть кнопка Edit
+        $response1->assertSee(__('Edit'));
+        $response1->assertSee('Изменить');
+
+        // Проверяем, что НЕТ кнопки Delete для этой задачи
+        $response1->assertDontSee(__('Delete'));
+
+        // ТЕСТ 2: Пользователь ВИДИТ кнопку Delete для своих задач
+        $this->createTask([
+            'name' => 'Task 1',
+            'created_by_id' => $user->id
+        ]);
+
+        $response2 = $this->get(route('tasks.index'));
+        $response2->assertStatus(200);
+        $response2->assertSee(__('Tasks'));
+        $response2->assertSee('Создать задачу');
+
+        // Проверяем обе задачи
+        $response2->assertSee('Task 1');
+        $response2->assertSee('Task 2');
+
+        // Проверяем кнопки
+        $response2->assertSee(__('Edit'));
+        $response2->assertSee(__('Delete')); // Теперь должна быть хотя бы одна кнопка Delete
+        $response2->assertSee('Удалить');
+    }
+
+    public function testIndexAsGuest()
+    {
+        $response = $this->get('tasks');
+
         $response->assertStatus(200);
-        $response->assertSee(__('Task'));
-        $response->assertSee('Task 1');
-        $response->assertSee('Task 2');
+
+        $response->assertSee(__('Tasks'));
+
+        $response->assertDontSee('Создать задачу')
+            ->assertDontSee('Удалить')
+            ->assertDontSee('Изменить');
+
+        $response->assertDontSee(__('Create task'))
+            ->assertDontSee(__('Delete'))
+            ->assertDontSee(__('Edit'));
     }
 
     public function testCreate()
@@ -65,6 +115,8 @@ class TaskControllerTest extends TestCase
             'created_by_id' => $user->id,
             'assigned_to_id' => $user->id,
         ]);
+        $this->get('/tasks')
+            ->assertSee('Задача успешно создана');
     }
 
     public function testShow()
@@ -106,7 +158,7 @@ class TaskControllerTest extends TestCase
         $response = $this->get(route('tasks.edit', $task));
 
         $response->assertStatus(200);
-        $response->assertSee(__('Edit'));
+        $response->assertSee(__('Edit task'));
         $response->assertSee($task->name);
     }
 
@@ -170,7 +222,7 @@ class TaskControllerTest extends TestCase
         $response = $this->put(route('tasks.update', $task), $updateData);
 
         // Должен быть редирект на login или 403
-        $response->assertRedirect('/'); // Или assertStatus(403)
+        $response->assertRedirect('/login'); // Или assertStatus(403)
     }
 
     public function testDestroy()
@@ -183,6 +235,9 @@ class TaskControllerTest extends TestCase
 
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+
+        $this->get('/tasks')
+            ->assertSee('Задача успешно удалена');
     }
 
     public function testStoreCreateNewTaskWithLabels()
