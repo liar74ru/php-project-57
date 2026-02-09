@@ -16,7 +16,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('styles')
-        @include('layouts.partials.header')
+{{--        @include('layouts.partials.header')--}}
     </head>
     <body>
     <div id="app">
