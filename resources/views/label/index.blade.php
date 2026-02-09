@@ -53,16 +53,22 @@
                                                class="btn btn-outline-secondary btn-sm rounded me-2">
                                                 <i class="bi bi-pencil"></i> {{ __('Edit') }}
                                             </a>
-                                            <form method="POST"
+                                            <a href="{{ route('labels.destroy', $label->id) }}"
+                                               onclick="event.preventDefault();
+            if (confirm('{{ __('Delete status «:name»?', ['name' => $label->name]) }}')) {
+                document.getElementById('delete-label-form-{{ $label->id }}').submit();
+            }"
+                                               class="btn btn-outline-danger btn-sm rounded">
+                                                <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
+                                            </a>
+
+                                            <!-- Скрытая форма для DELETE запроса -->
+                                            <form id="delete-label-form-{{ $label->id }}"
+                                                  method="POST"
                                                   action="{{ route('labels.destroy', $label->id) }}"
-                                                  class="d-inline m-0">
+                                                  class="d-none">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                        class="btn btn-outline-danger btn-sm rounded"
-                                                        onclick="return confirm('{{ __('Delete status «:name»?', ['name' => $label->name]) }}')">
-                                                    <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
-                                                </button>
                                             </form>
                                         </div>
                                     </td>

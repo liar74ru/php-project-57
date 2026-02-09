@@ -38,6 +38,8 @@ class LabelController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:labels',
             'description' => 'nullable|string|max:500'
+        ], [
+            'name.unique' => 'Метка с таким именем уже существует.'
         ]);
 
         Label::create($data);
@@ -67,7 +69,9 @@ class LabelController extends Controller
                 'max:255',
                 Rule::unique('labels')->ignore($label->id) // Игнорируем текущую метку
             ],
-            'description' => 'nullable|string|max:500'
+            'description' => 'nullable|string|max:500',
+        ], [
+            'name.unique' => 'Метка с таким именем уже существует.'
         ]);
 
         $label->update($data);
