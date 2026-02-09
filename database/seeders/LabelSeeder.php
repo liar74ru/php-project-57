@@ -14,14 +14,13 @@ class LabelSeeder extends Seeder
     public function run(): void
     {
         $statuses = [
+            'bug' => 'Indicates an unexpected problem or unintended behavior',
+            'enhancement' => 'Indicates new feature requests',
+            'help wanted' => 'Indicates that a maintainer wants help',
             'ошибка' => 'Какая-то ошибка в коде или проблема с функциональностью',
             'документация' => 'Задача которая касается документации',
             'дубликат' => 'Повтор другой задачи',
-            'доработка' => 'Новая фича, которую нужно запилить',
-            'bug' => 'Indicates an unexpected problem or unintended behavior',
-            'enhancement' => 'Indicates new feature requests',
-            'help wanted' => 'Indicates that a maintainer wants help'
-
+            'доработка' => 'Новая фича, которую нужно запилить'
 
         ];
         foreach ($statuses as $name => $description) {
