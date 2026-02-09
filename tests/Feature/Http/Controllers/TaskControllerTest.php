@@ -32,7 +32,7 @@ class TaskControllerTest extends TestCase
 
         // Проверяем, что есть кнопка Edit
         $response1->assertSee(__('Edit'));
-        $response1->assertSee('Изменить');
+        $response1->assertSee('Обновить');
 
         // Проверяем, что НЕТ кнопки Delete для этой задачи
         $response1->assertDontSee(__('Delete'));

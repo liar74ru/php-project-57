@@ -43,11 +43,15 @@
                             <a href="{{ route('profile.edit') }}" class="auth-button">
                                 {{ __('Profile') }}
                             </a>
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                               class="auth-button ml-2">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <!-- Скрытая форма для POST запроса -->
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
-                                <button type="submit" class="auth-button ml-2">
-                                    {{ __('Logout')}}
-                                </button>
                             </form>
                         @else
                             <a href="{{ route('login') }}" class="auth-button">
