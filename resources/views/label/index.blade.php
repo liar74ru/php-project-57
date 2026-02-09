@@ -37,6 +37,7 @@
                                 <td class="ps-4">{{ $label->id }}</td>
                                 <td>
                                     <x-badge>{{ $label->name }}</x-badge>
+                                    <span style="display: none;">{{ $label->name }}</span>
                                 </td>
                                 <td>
                                     {{ $label->description }}
