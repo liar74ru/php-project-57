@@ -35,11 +35,9 @@
                                 @enderror
                             </div>
                         </div>
-                        <a href="{{ route('task_statuses.update', $task_status->id) }}"
-                           onclick="event.preventDefault(); this.closest('form').submit();"
-                           class="auth-button">
-                            {{ __('Update') }}
-                        </a>
+                        <button type="submit" class="auth-button">
+                            {{__('Update') }}
+                        </button>
                         <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">{{__('Cancel')}}</a>
                     </form>
                 @else
