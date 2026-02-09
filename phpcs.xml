@@ -32,5 +32,6 @@
     <exclude-pattern>*/*.blade.php</exclude-pattern>
     <exclude-pattern>*/*.js</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>composer-setup.php</exclude-pattern>
 
 </ruleset>

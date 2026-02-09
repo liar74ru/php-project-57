@@ -15,14 +15,12 @@ class SetLocale
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+
     public function handle(Request $request, Closure $next): Response
     {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
-        }
-
-        // Или пробуем определить по браузеру
-        elseif ($request->hasHeader('Accept-Language')) {
+        } elseif ($request->hasHeader('Accept-Language')) {
             $locale = substr($request->header('Accept-Language'), 0, 2);
             if (in_array($locale, ['en', 'ru'])) {
                 App::setLocale($locale);
