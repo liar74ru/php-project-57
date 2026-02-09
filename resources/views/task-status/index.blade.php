@@ -50,16 +50,22 @@
                                                class="btn btn-outline-secondary btn-sm rounded me-2">
                                                 <i class="bi bi-pencil"></i> {{ __('Edit') }}
                                             </a>
-                                            <form method="POST"
+                                            <a href="{{ route('task_statuses.destroy', $status->id) }}"
+                                               onclick="event.preventDefault();
+                                                        if (confirm('{{ __('Delete status «:name»?', ['name' => $status->name]) }}')) {
+                                                            document.getElementById('delete-form-{{ $status->id }}').submit();
+                                                        }"
+                                               class="btn btn-outline-danger btn-sm rounded">
+                                                <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
+                                            </a>
+
+                                            <!-- Скрытая форма для DELETE запроса -->
+                                            <form id="delete-form-{{ $status->id }}"
+                                                  method="POST"
                                                   action="{{ route('task_statuses.destroy', $status->id) }}"
-                                                  class="d-inline m-0">
+                                                  class="d-none">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                        class="btn btn-outline-danger btn-sm rounded"
-                                                        onclick="return confirm('{{ __('Delete status «:name»?', ['name' => $status->name]) }}')">
-                                                    <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
-                                                </button>
                                             </form>
                                         </div>
                                     </td>
