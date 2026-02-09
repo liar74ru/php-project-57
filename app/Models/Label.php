@@ -15,6 +15,10 @@ class Label extends Model
         'description'
     ];
 
+    public static function orderBy(string $string)
+    {
+    }
+
     public function tasks()
     {
         return $this->belongsToMany(Task::class);

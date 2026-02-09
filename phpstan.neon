@@ -1,0 +1,8 @@
+parameters:
+    level: 2  # начинаем с 1 уровня
+    paths:
+        - app
+        - routes
+    excludePaths:
+        - tests  # временно исключаем тесты
+    reportUnmatchedIgnoredErrors: false
