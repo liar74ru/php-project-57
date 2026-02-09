@@ -202,7 +202,6 @@ class TaskStatusControllerTest extends TestCase
         // Проверяем, что ошибка отображается
         $this->get(route('task_statuses.edit', $taskStatus->id))
             ->assertSee('Это обязательное поле');
-
     }
 
     public function testDeleteOk()

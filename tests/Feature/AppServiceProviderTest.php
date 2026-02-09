@@ -9,14 +9,13 @@ use Illuminate\Support\Facades\App;
 
 class AppServiceProviderTest extends TestCase
 {
-
-    public function test_app_service_provider_can_be_instantiated(): void
+    public function testAppServiceProviderCanBeInstantiated(): void
     {
         $provider = new AppServiceProvider($this->app);
         $this->assertInstanceOf(AppServiceProvider::class, $provider);
     }
 
-    public function test_app_service_provider_has_boot_method(): void
+    public function testAppServiceProviderHasBootMethod(): void
     {
         $provider = new AppServiceProvider($this->app);
         $this->assertTrue(method_exists($provider, 'boot'));
@@ -27,7 +26,7 @@ class AppServiceProviderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_app_service_provider_has_register_method(): void
+    public function testAppServiceProviderHasRegisterMethod(): void
     {
         $provider = new AppServiceProvider($this->app);
         $this->assertTrue(method_exists($provider, 'register'));
@@ -38,7 +37,7 @@ class AppServiceProviderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_it_forces_https_in_production_environment(): void
+    public function testItForcesHttpsInProductionEnvironment(): void
     {
         // Сохраняем оригинальное значение
         $originalEnv = $_ENV['APP_ENV'] ?? null;
@@ -66,7 +65,7 @@ class AppServiceProviderTest extends TestCase
         }
     }
 
-    public function test_it_does_not_force_https_in_non_production_environment(): void
+    public function testItDoesNotForceHttpsIinNonProductionEnvironment(): void
     {
         // Устанавливаем не-production окружение
         $originalEnv = $_ENV['APP_ENV'] ?? null;

@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class LoginRequestTest extends TestCase
 {
-    public function test_no_exception_when_rate_limit_not_exceeded(): void
+    public function testNoExceptionWhenRateLimitNotExceeded(): void
     {
         RateLimiter::shouldReceive('tooManyAttempts')
             ->once()
@@ -25,7 +25,7 @@ class LoginRequestTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_validation_exception_when_rate_limit_exceeded(): void
+    public function testValidationExceptionWhenRateLimitExceeded(): void
     {
         Event::fake();
 
@@ -51,7 +51,7 @@ class LoginRequestTest extends TestCase
         }
     }
 
-    public function test_lockout_event_is_dispatched(): void
+    public function testLockoutEventIsDispatched(): void
     {
         Event::fake();
 

@@ -297,8 +297,8 @@ function getPlatformIssues(&$errors, &$warnings, $install)
     $errors = array();
     $warnings = array();
 
-    $iniMessage = PHP_EOL.getIniMessage();
-    $iniMessage .= PHP_EOL.'If you can not modify the ini file, you can also run `php -d option=value` to modify ini values on the fly. You can use -d multiple times.';
+    $iniMessage = PHP_EOL . getIniMessage();
+    $iniMessage .= PHP_EOL . 'If you can not modify the ini file, you can also run `php -d option=value` to modify ini values on the fly. You can use -d multiple times.';
 
     if (ini_get('detect_unicode')) {
         $errors['unicode'] = array(
@@ -316,7 +316,7 @@ function getPlatformIssues(&$errors, &$warnings, $install)
             $errors['suhosin'] = array(
                 'The suhosin.executor.include.whitelist setting is incorrect.',
                 'Add the following to the end of your `php.ini` or suhosin.ini (Example path [for Debian]: /etc/php5/cli/conf.d/suhosin.ini):',
-                '    suhosin.executor.include.whitelist = phar '.$suhosin,
+                '    suhosin.executor.include.whitelist = phar ' . $suhosin,
                 $iniMessage
             );
         }
@@ -369,7 +369,7 @@ function getPlatformIssues(&$errors, &$warnings, $install)
     if (extension_loaded('ionCube Loader') && ioncube_loader_iversion() < 40009) {
         $ioncube = ioncube_loader_version();
         $errors['ioncube'] = array(
-            'Your ionCube Loader extension ('.$ioncube.') is incompatible with Phar files.',
+            'Your ionCube Loader extension (' . $ioncube . ') is incompatible with Phar files.',
             'Upgrade to ionCube 4.0.9 or higher or remove this line (path may be different) from your `php.ini` to disable it:',
             '    zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so',
             $iniMessage
@@ -378,13 +378,13 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 
     if (version_compare(PHP_VERSION, '5.3.2', '<')) {
         $errors['php'] = array(
-            'Your PHP ('.PHP_VERSION.') is too old, you must upgrade to PHP 5.3.2 or higher.'
+            'Your PHP (' . PHP_VERSION . ') is too old, you must upgrade to PHP 5.3.2 or higher.'
         );
     }
 
     if (version_compare(PHP_VERSION, '5.3.4', '<')) {
         $warnings['php'] = array(
-            'Your PHP ('.PHP_VERSION.') is quite old, upgrading to PHP 5.3.4 or higher is recommended.',
+            'Your PHP (' . PHP_VERSION . ') is quite old, upgrading to PHP 5.3.4 or higher is recommended.',
             'Composer works with 5.3.2+ for most people, but there might be edge case issues.'
         );
     }
@@ -403,7 +403,7 @@ function getPlatformIssues(&$errors, &$warnings, $install)
         $opensslVersion = $opensslVersion ? $opensslVersion : OPENSSL_VERSION_TEXT;
 
         $warnings['openssl_version'] = array(
-            'The OpenSSL library ('.$opensslVersion.') used by PHP does not support TLSv1.2 or TLSv1.1.',
+            'The OpenSSL library (' . $opensslVersion . ') used by PHP does not support TLSv1.2 or TLSv1.1.',
             'If possible you should upgrade OpenSSL to version 1.0.1 or above.'
         );
     }
@@ -441,13 +441,15 @@ function getPlatformIssues(&$errors, &$warnings, $install)
         );
     }
 
-    if (defined('PHP_WINDOWS_VERSION_BUILD')
+    if (
+        defined('PHP_WINDOWS_VERSION_BUILD')
         && (version_compare(PHP_VERSION, '7.2.23', '<')
         || (version_compare(PHP_VERSION, '7.3.0', '>=')
-        && version_compare(PHP_VERSION, '7.3.10', '<')))) {
+        && version_compare(PHP_VERSION, '7.3.10', '<')))
+    ) {
         $warnings['onedrive'] = array(
             'The Windows OneDrive folder is not supported on PHP versions below 7.2.23 and 7.3.10.',
-            'Upgrade your PHP ('.PHP_VERSION.') to use this location with Composer.'
+            'Upgrade your PHP (' . PHP_VERSION . ') to use this location with Composer.'
         );
     }
 
@@ -482,11 +484,11 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 
     // Stringify the message arrays
     foreach ($errors as $key => $value) {
-        $errors[$key] = PHP_EOL.implode(PHP_EOL, $value);
+        $errors[$key] = PHP_EOL . implode(PHP_EOL, $value);
     }
 
     foreach ($warnings as $key => $value) {
-        $warnings[$key] = PHP_EOL.implode(PHP_EOL, $value);
+        $warnings[$key] = PHP_EOL . implode(PHP_EOL, $value);
     }
 
     return !empty($errors) || !empty($warnings);
@@ -572,7 +574,7 @@ function getHomeDir()
     $userDir = getUserDir();
 
     if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
-        return $userDir.'/Composer';
+        return $userDir . '/Composer';
     }
 
     $dirs = array();
@@ -612,7 +614,7 @@ function getUserDir()
     $userDir = getenv($userEnv);
 
     if (!$userDir) {
-        throw new RuntimeException('The '.$userEnv.' or COMPOSER_HOME environment variable must be set for composer to run correctly');
+        throw new RuntimeException('The ' . $userEnv . ' or COMPOSER_HOME environment variable must be set for composer to run correctly');
     }
 
     return rtrim(strtr($userDir, '\\', '/'), '/');
@@ -680,7 +682,7 @@ function getIniMessage()
         return 'Your command-line PHP is using multiple ini files. Run `php --ini` to show them.';
     }
 
-    return 'The php.ini used by your command-line PHP is: '.$ini;
+    return 'The php.ini used by your command-line PHP is: ' . $ini;
 }
 
 class Installer
@@ -742,7 +744,7 @@ class Installer
 
             if ($result && $channel !== 'stable' && !$version && defined('PHP_BINARY')) {
                 $null = (defined('PHP_WINDOWS_VERSION_MAJOR') ? 'NUL' : '/dev/null');
-                @exec(escapeshellarg(PHP_BINARY) .' '.escapeshellarg($this->target).' self-update --'.$channel.' --set-channel-only -q > '.$null.' 2> '.$null, $output);
+                @exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($this->target) . ' self-update --' . $channel . ' --set-channel-only -q > ' . $null . ' 2> ' . $null, $output);
             }
         } catch (Exception $e) {
             $result = false;
@@ -770,18 +772,18 @@ class Installer
      */
     protected function initTargets($installDir, $filename)
     {
-        $this->displayPath = ($installDir ? rtrim($installDir, '/').'/' : '').$filename;
+        $this->displayPath = ($installDir ? rtrim($installDir, '/') . '/' : '') . $filename;
         $installDir = $installDir ? realpath($installDir) : getcwd();
 
         if (!is_writeable($installDir)) {
-            throw new RuntimeException('The installation directory "'.$installDir.'" is not writable');
+            throw new RuntimeException('The installation directory "' . $installDir . '" is not writable');
         }
 
-        $this->target = $installDir.DIRECTORY_SEPARATOR.$filename;
-        $this->tmpFile = $installDir.DIRECTORY_SEPARATOR.basename($this->target, '.phar').'-temp.phar';
+        $this->target = $installDir . DIRECTORY_SEPARATOR . $filename;
+        $this->tmpFile = $installDir . DIRECTORY_SEPARATOR . basename($this->target, '.phar') . '-temp.phar';
 
         $uriScheme = $this->disableTls ? 'http' : 'https';
-        $this->baseUrl = $uriScheme.'://getcomposer.org';
+        $this->baseUrl = $uriScheme . '://getcomposer.org';
     }
 
     /**
@@ -851,7 +853,7 @@ class Installer
     {
         $this->errHandler->start();
 
-        $target = $path.DIRECTORY_SEPARATOR.$filename;
+        $target = $path . DIRECTORY_SEPARATOR . $filename;
         $installed = file_exists($target);
         $write = file_put_contents($target, $data, LOCK_EX);
         @chmod($target, 0644);
@@ -912,7 +914,7 @@ class Installer
 
         if (!$this->quiet) {
             if ($result) {
-                out(PHP_EOL."Composer (version {$version}) successfully installed to: {$this->target}", 'success');
+                out(PHP_EOL . "Composer (version {$version}) successfully installed to: {$this->target}", 'success');
                 out("Use it: php {$this->displayPath}", 'info');
                 out('');
             } else {
@@ -938,7 +940,7 @@ class Installer
 
         if ($version) {
             if (empty($url)) {
-                $url = $this->baseUrl."/download/{$version}/composer.phar";
+                $url = $this->baseUrl . "/download/{$version}/composer.phar";
             }
             return true;
         }
@@ -963,7 +965,7 @@ class Installer
      */
     protected function downloadVersionData(&$data, &$error)
     {
-        $url = $this->baseUrl.'/versions';
+        $url = $this->baseUrl . '/versions';
         $errFmt = 'The "%s" file could not be %s: %s';
 
         if (!$json = $this->httpClient->get($url)) {
@@ -991,15 +993,13 @@ class Installer
     {
         $error = '';
         $errFmt = 'The "%s" file could not be downloaded: %s';
-        $sigUrl = $url.'.sig';
+        $sigUrl = $url . '.sig';
         $this->errHandler->start();
 
         if (!$fh = fopen($this->tmpFile, 'w')) {
             $error = sprintf('Could not create file "%s": %s', $this->tmpFile, $this->errHandler->message);
-
         } elseif (!$this->getSignature($sigUrl, $signature)) {
             $error = sprintf($errFmt, $sigUrl, $this->errHandler->message);
-
         } elseif (!fwrite($fh, $this->httpClient->get($url))) {
             $error = sprintf($errFmt, $url, $this->errHandler->message);
         }
@@ -1025,11 +1025,9 @@ class Installer
         $error = '';
 
         if (!$this->validatePhar($this->tmpFile, $pharError)) {
-            $error = 'The download is corrupt: '.$pharError;
-
+            $error = 'The download is corrupt: ' . $pharError;
         } elseif (!$this->verifySignature($version, $signature, $this->tmpFile)) {
             $error = 'Signature mismatch, could not verify the phar file integrity';
-
         } else {
             $this->errHandler->start();
 
@@ -1056,7 +1054,7 @@ class Installer
         foreach ($data[$channel] as $candidate) {
             if ($candidate['min-php'] <= PHP_VERSION_ID) {
                 $version = $candidate['version'];
-                $url = $this->baseUrl.$candidate['path'];
+                $url = $this->baseUrl . $candidate['path'];
                 break;
             }
         }
@@ -1109,7 +1107,7 @@ class Installer
     {
         if (!$result = $this->disableTls) {
             $path = preg_match('{^[0-9a-f]{40}$}', $version) ? $this->pubKeys['dev'] : $this->pubKeys['tags'];
-            $pubkeyid = openssl_pkey_get_public('file://'.$path);
+            $pubkeyid = openssl_pkey_get_public('file://' . $path);
 
             $result = 1 === openssl_verify(
                 file_get_contents($file),
@@ -1147,7 +1145,6 @@ class Installer
             // Free the variable to unlock the file
             unset($phar);
             $result = true;
-
         } catch (Exception $e) {
             if (!$e instanceof UnexpectedValueException && !$e instanceof PharException) {
                 throw $e;
@@ -1168,7 +1165,7 @@ class Installer
         if (function_exists('json_last_error_msg')) {
             return json_last_error_msg();
         } else {
-            return 'json_last_error = '.json_last_error();
+            return 'json_last_error = ' . json_last_error();
         }
     }
 
@@ -1367,8 +1364,8 @@ class NoProxyPattern
     }
 }
 
-class HttpClient {
-
+class HttpClient
+{
     /** @var null|string */
     private static $caPath;
 
@@ -1381,7 +1378,7 @@ class HttpClient {
         if ($this->disableTls === false) {
             if (!empty($cafile) && !is_dir($cafile)) {
                 if (!is_readable($cafile) || !validateCaFile(file_get_contents($cafile))) {
-                    throw new RuntimeException('The configured cafile (' .$cafile. ') was not valid or could not be read.');
+                    throw new RuntimeException('The configured cafile (' . $cafile . ') was not valid or could not be read.');
                 }
             }
             $options = $this->getTlsStreamContextDefaults($cafile);
@@ -1392,7 +1389,7 @@ class HttpClient {
     public function get($url)
     {
         if (function_exists('http_clear_last_response_headers')) {
-           $http_response_header = http_clear_last_response_headers();
+            $http_response_header = http_clear_last_response_headers();
         }
 
         $context = $this->getStreamContext($url);
@@ -1400,7 +1397,7 @@ class HttpClient {
 
         if ($result && extension_loaded('zlib')) {
             if (function_exists('http_get_last_response_headers')) {
-               $http_response_header = http_get_last_response_headers();
+                $http_response_header = http_get_last_response_headers();
             }
             $headers = $http_response_header;
             $decode = false;
@@ -1418,7 +1415,7 @@ class HttpClient {
                     $result = zlib_decode($result);
                 } else {
                     // work around issue with gzuncompress & co that do not work with all gzip checksums
-                    $result = file_get_contents('compress.zlib://data:application/octet-stream;base64,'.base64_encode($result));
+                    $result = file_get_contents('compress.zlib://data:application/octet-stream;base64,' . base64_encode($result));
                 }
 
                 if (!$result) {
@@ -1617,7 +1614,7 @@ class HttpClient {
         if (extension_loaded('zlib')) {
             $options['http']['header'] .= "Accept-Encoding: gzip\r\n";
         }
-        $options['http']['header'] .= "User-Agent: ".COMPOSER_INSTALLER."\r\n";
+        $options['http']['header'] .= "User-Agent: " . COMPOSER_INSTALLER . "\r\n";
         $options['http']['protocol_version'] = 1.1;
         $options['http']['timeout'] = 600;
 
@@ -1711,7 +1708,7 @@ class HttpClient {
 
         foreach ($caBundlePaths as $caBundle) {
             $caBundle = dirname($caBundle);
-            if (is_dir($caBundle) && glob($caBundle.'/*')) {
+            if (is_dir($caBundle) && glob($caBundle . '/*')) {
                 return self::$caPath = $caBundle;
             }
         }

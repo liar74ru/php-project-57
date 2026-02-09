@@ -12,7 +12,7 @@ class EmailVerificationNotificationControllerTest extends TestCase
 {
     use RefreshDatabase; // Добавляем эту строку
 
-    public function test_verified_user_redirected_to_home()
+    public function testVerifiedUserRedirectedToHome()
     {
         // Создаем пользователя с подтвержденным email
         $user = User::factory()->create([
@@ -26,7 +26,7 @@ class EmailVerificationNotificationControllerTest extends TestCase
         $response->assertRedirect(route('home'));
     }
 
-    public function test_sends_verification_email_to_unverified_user()
+    public function testSendsVerificationEmailToUnverifiedUser()
     {
         // Отключаем реальные уведомления
         Notification::fake();

@@ -14,7 +14,7 @@ class UserTest extends TestCase
      * 1. Тест создания пользователя
      * Проверяем, что можем создать пользователя с обязательными полями
      */
-    public function test_user_can_be_created()
+    public function testUserCanBeCreated()
     {
         // Arrange: Подготовка данных
         $userData = [
@@ -41,7 +41,7 @@ class UserTest extends TestCase
      * 2. Тест уникальности email
      * Email должен быть уникальным в системе
      */
-    public function test_email_must_be_unique()
+    public function testEmailMustBeUnique()
     {
         // Создаем первого пользователя
         $this->createTestUser([
@@ -61,7 +61,7 @@ class UserTest extends TestCase
      * 3. Тест обязательных полей
      * Имя и email должны быть обязательными
      */
-    public function test_name_and_email_are_required()
+    public function testNameAndEmailAreRequired()
     {
         // Пытаемся создать пользователя без имени
         $this->expectException(\Illuminate\Database\QueryException::class);
@@ -86,7 +86,7 @@ class UserTest extends TestCase
      * 4. Тест связи "созданные задачи"
      * Пользователь может создавать задачи
      */
-    public function test_user_has_created_tasks()
+    public function testUserHasCreatedTasks()
     {
         // Создаем пользователя
         $user = $this->createTestUser();
@@ -110,7 +110,7 @@ class UserTest extends TestCase
      * 5. Тест связи "назначенные задачи"
      * Пользователю могут быть назначены задачи
      */
-    public function test_user_has_assigned_tasks()
+    public function testUserHasAssignedTasks()
     {
         $user = $this->createTestUser();
         $status = $this->createTaskStatus();
@@ -129,7 +129,7 @@ class UserTest extends TestCase
      * 6. Тест fillable полей
      * Проверяем, какие поля можно массово назначать
      */
-    public function test_fillable_fields()
+    public function testFillableFields()
     {
         $user = new User();
 
@@ -143,7 +143,7 @@ class UserTest extends TestCase
      * 7. Тест hidden полей
      * Пароль и токен не должны показываться при сериализации
      */
-    public function test_hidden_fields()
+    public function testHiddenFields()
     {
         $user = new User();
 
@@ -156,7 +156,7 @@ class UserTest extends TestCase
      * 8. Тест casts (приведение типов)
      * Проверяем, что пароль хэшируется автоматически
      */
-    public function test_password_is_hashed()
+    public function testPasswordIsHashed()
     {
         $user = $this->createTestUser([
             'password' => 'plain_password', // Пароль в открытом виде
@@ -170,7 +170,7 @@ class UserTest extends TestCase
     /**
      * 9. Тест обновления пользователя
      */
-    public function test_user_can_be_updated()
+    public function testUserCanBeUpdated()
     {
         // Создаем пользователя
         $user = $this->createTestUser(['name' => 'Old Name']);
@@ -194,7 +194,7 @@ class UserTest extends TestCase
     /**
      * 10. Тест удаления пользователя
      */
-    public function test_user_can_be_deleted()
+    public function testUserCanBeDeleted()
     {
         $user = $this->createTestUser();
         $userId = $user->id;

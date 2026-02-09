@@ -9,6 +9,7 @@ use App\Models\User;
 class TaskStatus extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name'
     ];
@@ -17,5 +18,4 @@ class TaskStatus extends Model
     {
         return $this->hasMany(Task::class, 'status_id');
     }
-
 }

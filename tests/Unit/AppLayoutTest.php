@@ -7,14 +7,14 @@ use Tests\TestCase;
 
 class AppLayoutTest extends TestCase
 {
-    public function test_it_can_be_instantiated()
+    public function testItCanBeInstantiated()
     {
         $component = new AppLayout();
 
         $this->assertInstanceOf(AppLayout::class, $component);
     }
 
-    public function test_it_returns_correct_view()
+    public function testItReturnsCorrectView()
     {
         $component = new AppLayout();
         $view = $component->render();
@@ -22,7 +22,7 @@ class AppLayoutTest extends TestCase
         $this->assertEquals('layouts.app', $view->name());
     }
 
-    public function test_view_can_be_rendered()
+    public function testViewCanBeRendered()
     {
         $component = new AppLayout();
         $view = $component->render();

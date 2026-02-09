@@ -12,21 +12,21 @@ return new class extends Migration
     public function up(): void
     {
             Schema::create('label_task', function (Blueprint $table) {
-            $table->id();
+                $table->id();
             // Внешние ключи
-            $table->foreignId('task_id')
+                $table->foreignId('task_id')
                 ->constrained() // Ссылается на таблицу tasks, поле id
                 ->onDelete('cascade'); // При удалении задачи удаляются все связи
 
-            $table->foreignId('label_id')
+                $table->foreignId('label_id')
                 ->constrained() // Ссылается на таблицу labels, поле id
                 ->onDelete('cascade'); // При удалении метки удаляются все связи
 
             // Уникальная комбинация task_id + label_id
             // Нельзя привязать одну и ту же метку к задаче дважды
-            $table->unique(['task_id', 'label_id']);
-            $table->timestamps();
-        });
+                $table->unique(['task_id', 'label_id']);
+                $table->timestamps();
+            });
     }
 
     /**

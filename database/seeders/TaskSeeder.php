@@ -21,15 +21,15 @@ class TaskSeeder extends Seeder
             $statuses = TaskStatus::all();
 
             // Если нет пользователей или статусов, создаем сначала их
-            if ($users->isEmpty()) {
-                $this->call(UserSeeder::class);
-                $users = User::all();
-            }
+        if ($users->isEmpty()) {
+            $this->call(UserSeeder::class);
+            $users = User::all();
+        }
 
-            if ($statuses->isEmpty()) {
-                $this->call(TaskStatusSeeder::class);
-                $statuses = TaskStatus::all();
-            }
+        if ($statuses->isEmpty()) {
+            $this->call(TaskStatusSeeder::class);
+            $statuses = TaskStatus::all();
+        }
 
             // Массив примерных задач (как на скриншоте)
             $tasks = [
@@ -111,6 +111,6 @@ class TaskSeeder extends Seeder
             }
 
             $this->command->info('Создано ' . count($tasks) . ' задач');
-        }
+            }
     }
 }

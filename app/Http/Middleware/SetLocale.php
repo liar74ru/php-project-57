@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
-
 class SetLocale
 {
     /**

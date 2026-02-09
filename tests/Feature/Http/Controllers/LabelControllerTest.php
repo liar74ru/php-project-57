@@ -31,7 +31,6 @@ class LabelControllerTest extends TestCase
         $response = $this->get('/labels/destroy');
         $response->assertRedirect('login');
         $response->assertStatus(302);
-
     }
 
     public function testIndex()
@@ -382,8 +381,10 @@ class LabelControllerTest extends TestCase
 
         $found = false;
         foreach ($flash as $item) {
-            if (isset($item['message']) && $item['message'] === $message
-                && isset($item['level']) && $item['level'] === $level) {
+            if (
+                isset($item['message']) && $item['message'] === $message
+                && isset($item['level']) && $item['level'] === $level
+            ) {
                 $found = true;
                 break;
             }
@@ -417,6 +418,4 @@ class LabelControllerTest extends TestCase
 
         $this->assertDatabaseHas('labels', $data);
     }
-
-
 }

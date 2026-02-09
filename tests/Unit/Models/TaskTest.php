@@ -12,7 +12,7 @@ class TaskTest extends TestCase
     /**
      * Тест 1: Проверка создания задачи
      */
-    public function test_task_can_be_created()
+    public function testTaskCanBeCreated()
     {
         $task = $this->createTask();
 
@@ -26,7 +26,7 @@ class TaskTest extends TestCase
     /**
      * Тест 2: Проверка связи задачи со статусом
      */
-    public function test_task_belongs_to_status()
+    public function testTaskBelongsToStatus()
     {
         // Создаем задачу
         $task = $this->createTask();
@@ -44,7 +44,7 @@ class TaskTest extends TestCase
     /**
      * Тест 3: Проверка связи задачи с создателем (creator)
      */
-    public function test_task_belongs_to_creator()
+    public function testTaskBelongsToCreator()
     {
         // Создаем задачу
         $task = $this->createTask();
@@ -63,7 +63,7 @@ class TaskTest extends TestCase
     /**
      * Тест 4: Проверка связи задачи с исполнителем (assignee)
      */
-    public function test_task_belongs_to_assignee()
+    public function testTaskBelongsToAssignee()
     {
         // Создаем задачу
         $task = $this->createTask();
