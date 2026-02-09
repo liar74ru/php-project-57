@@ -47,7 +47,7 @@
                             @enderror
                         </div>
                         <button class="auth-button">
-                            {{ __('Edit') }}
+                            {{ __('Update') }}
                         </button>
                         <a href="{{ route('labels.index') }}" class="auth-button-grey">{{__('Cancel')}}</a>
                     </form>

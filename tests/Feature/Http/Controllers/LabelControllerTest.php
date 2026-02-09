@@ -417,4 +417,6 @@ class LabelControllerTest extends TestCase
 
         $this->assertDatabaseHas('labels', $data);
     }
+
+
 }
