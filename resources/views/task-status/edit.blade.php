@@ -38,7 +38,7 @@
                         <a href="{{ route('task_statuses.update', $task_status->id) }}"
                            onclick="event.preventDefault(); this.closest('form').submit();"
                            class="auth-button">
-                            {{ __('Edit2') }}
+                            {{ __('Update') }}
                         </a>
                         <a href="{{ route('task_statuses.index') }}" class="auth-button-grey">{{__('Cancel')}}</a>
                     </form>
