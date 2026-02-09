@@ -110,16 +110,22 @@
                                     <td class="text-end pe-4">
                                         <div class="btn-group btn-group-sm" role="group">
                                             @if (Auth::user()->name == $task->creator->name)
-                                                <form method="POST"
+                                                <a href="{{ route('tasks.destroy', $task->id) }}"
+                                                   onclick="event.preventDefault();
+                                                    if (confirm('{{ __('Delete task «:name»?', ['name' => $task->name]) }}')) {
+                                                        document.getElementById('delete-task-form-{{ $task->id }}').submit();
+                                                    }"
+                                                   class="btn btn-outline-danger btn-sm rounded me-2">
+                                                    <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
+                                                </a>
+
+                                                <!-- Скрытая форма для DELETE запроса -->
+                                                <form id="delete-task-form-{{ $task->id }}"
+                                                      method="POST"
                                                       action="{{ route('tasks.destroy', $task->id) }}"
-                                                      class="d-inline m-0">
+                                                      class="d-none">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit"
-                                                            class="btn btn-outline-danger btn-sm rounded me-2"
-                                                            onclick="return confirm('{{ __('Delete task «:name»?', ['name' => $task->name]) }}')">
-                                                        <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
-                                                    </button>
                                                 </form>
                                             @endif
                                             <a href="{{ route('tasks.edit', $task) }}"
