@@ -20,12 +20,19 @@ class SetLocale
     {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
-        } elseif ($request->hasHeader('Accept-Language')) {
-            $locale = substr($request->header('Accept-Language'), 0, 2);
-            if (in_array($locale, ['en', 'ru'])) {
-                App::setLocale($locale);
-            }
+        } else {
+            $locale = 'ru';
+            App::setLocale($locale);
         }
+
+//        if (Session::has('locale')) {
+//            App::setLocale(Session::get('locale'));
+//        } elseif ($request->hasHeader('Accept-Language')) {
+//            $locale = substr($request->header('Accept-Language'), 0, 2);
+//            if (in_array($locale, ['en', 'ru'])) {
+//                App::setLocale($locale);
+//            }
+//        }
         return $next($request);
     }
 }
