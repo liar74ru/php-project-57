@@ -24,18 +24,18 @@ class TaskStatusPolicy
     public function create(User $user): bool
     {
         // Только авторизованные пользователи могут создавать статусы
-        return $user !== null;
+        return true;
     }
 
     public function update(User $user, TaskStatus $taskStatus): bool
     {
         // Любой авторизованный пользователь может редактировать статусы
-        return $user !== null;
+        return true;
     }
 
     public function delete(User $user, TaskStatus $taskStatus): bool
     {
         // Проверяем, что статус не используется в задачах
-        return $user !== null;
+        return true;
     }
 }
