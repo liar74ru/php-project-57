@@ -1,30 +1,30 @@
 <?php
 
 return [
-    'required' => 'Поле :attribute обязательно для заполнения. (Это обязательное поле)',
-    'unique' => 'Такой :attribute уже существует.',
-    'failed' => 'Введите правильные имя пользователя и пароль',
-    'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте снова через :seconds секунд.',
-    'confirmed' => 'Пароль и подтверждение не совпадают',
+    'required' => 'The :attribute field is required.',
+    'unique' => 'This :attribute already exists.',
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'confirmed' => 'The password confirmation does not match.',
     'max' => [
-        'string' => 'Поле :attribute не должно превышать :max символов.',
+        'string' => 'The :attribute field must not exceed :max characters.',
     ],
     'min' => [
-        'numeric' => 'Поле :attribute должно быть не меньше :min.',
-        'file' => 'Размер файла в поле :attribute должен быть не меньше :min килобайт.',
-        'string' => 'Пароль должен иметь длину не менее :min символов',
-        'array' => 'Поле :attribute должно содержать не менее :min элементов.',
+        'numeric' => 'The :attribute field must be at least :min.',
+        'file' => 'The :attribute file must be at least :min kilobytes.',
+        'string' => 'The password must be at least :min characters.',
+        'array' => 'The :attribute field must have at least :min items.',
     ],
     'attributes' => [
-        'name' => 'имя',
-        'description' => 'описание',
-        'password' => 'Пароль',
-        'password_confirmation' => 'Подтверждение пароля',
-        'status_id' => 'cтатус'
+        'name' => 'name',
+        'description' => 'description',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'status_id' => 'status'
     ],
     'custom' => [
         'name' => [
-            'unique' => 'Статус с таким именем уже существует.',
+            'unique' => 'A status with this name already exists.',
         ],
     ],
 ];

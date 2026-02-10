@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\App;
 
 class AppServiceProviderTest extends TestCase
 {
-
     public function testItForcesHttpsInProductionEnvironment(): void
     {
         // Сохраняем оригинальное значение
