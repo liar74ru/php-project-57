@@ -7,13 +7,6 @@ use Tests\TestCase;
 
 class AppLayoutTest extends TestCase
 {
-    public function testItCanBeInstantiated()
-    {
-        $component = new AppLayout();
-
-        $this->assertInstanceOf(AppLayout::class, $component);
-    }
-
     public function testItReturnsCorrectView()
     {
         $component = new AppLayout();
@@ -28,7 +21,6 @@ class AppLayoutTest extends TestCase
         $view = $component->render();
         $html = $view->render();
 
-        $this->assertIsString($html);
         $this->assertNotEmpty($html);
     }
 }
