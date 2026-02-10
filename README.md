@@ -178,9 +178,7 @@ make log             # Просмотр логов в реальном врем�
 
 ## 📊 Статус проекта
 
-![Build Status](https://img.shields.io/badge/build-passing-success)
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=liar74ru_php-project-57&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=liar74ru_php-project-57)
-![Maintainability](https://img.shields.io/badge/maintainability-A-green)
-![Tests](https://img.shields.io/badge/tests-29_passed,_114_assertions-brightgreen)
 ![PHP Version](https://img.shields.io/badge/PHP-8.4.16-777BB4)
 ![Laravel Version](https://img.shields.io/badge/Laravel-12.50.0-FF2D20)
