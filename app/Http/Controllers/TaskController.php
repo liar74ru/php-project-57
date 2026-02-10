@@ -167,8 +167,8 @@ class TaskController extends Controller
         if ($user->id !== $task->created_by_id) {
             flash()->error('Не удалось удалить задачу!');
         } else {
-        $task->delete();
-        flash()->info('Задача успешно удалена!');
+            $task->delete();
+            flash()->info('Задача успешно удалена!');
         }
 
         return redirect(route('tasks.index'));
