@@ -11,7 +11,7 @@ class Task extends Model
 {
     use HasFactory;
 
-    public mixed $labels;
+//    public mixed $labels;
     protected $fillable = [
         'name',
         'description',
