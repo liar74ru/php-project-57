@@ -23,7 +23,6 @@
                                        id="name"
                                        value="{{ old('name', $task->name) }}">
                             </div>
-                            {{-- Вывод ошибки под полем --}}
                             @error('name')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -42,9 +41,10 @@
                             </div>
                             <div>
                                 <select class="rounded border-gray-300 w-1/3" name="status_id" id="status_id">
+                                    <option value="">{{ __('Select status') }}</option>
                                     @foreach($statuses as $status)
                                         <option value="{{ $status->id }}"
-                                            {{ old('status_id', $task->status_id) == $status->id ? 'selected' : '' }}>
+                                            @selected(old('status_id', $task->status_id) == $status->id)>
                                             {{ $status->name }}
                                         </option>
                                     @endforeach
@@ -61,29 +61,45 @@
                             </div>
                             <div>
                                 <select class="rounded border-gray-300 w-1/3" name="assigned_to_id" id="assigned_to_id">
-                                    <option value=""></option>
+                                    <option value="">{{ __('Select assignee') }}</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}"
-                                            {{ old('assigned_to_id', $task->assigned_to_id) == $user->id ? 'selected' : '' }}>
+                                            @selected(old('assigned_to_id', $task->assigned_to_id) == $user->id)>
                                             {{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+                            @error('assigned_to_id')
+                            <div class="invalid-feedback d-block">
+                                {{ $message }}
+                            </div>
+                            @enderror
 
                             <div class="mt-2">
                                 <label for="labels">{{ __('Labels') }}</label>
                             </div>
                             <div>
-                                <select class="rounded border-gray-300 w-1/3" name="labels[]" multiple>
+                                <select class="rounded border-gray-300 w-1/3 h-32" name="labels[]" id="labels" multiple>
+                                    <option value="" disabled>{{ __('Select labels') }}</option>
                                     @foreach($allLabels as $label)
                                         <option value="{{ $label->id }}"
-                                            {{ in_array($label->id, old('labels', $attachedLabelIds)) ? 'selected' : '' }}>
+                                            @selected(in_array($label->id, old('labels', $attachedLabelIds)))>
                                             {{ $label->name }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+                            @error('labels')
+                            <div class="invalid-feedback d-block">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                            @error('labels.*')
+                            <div class="invalid-feedback d-block">
+                                {{ $message }}
+                            </div>
+                            @enderror
 
                             <div class="mt-2">
                                 <button class="auth-button" type="submit">{{ __('Update') }}</button>

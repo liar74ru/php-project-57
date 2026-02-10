@@ -7,9 +7,7 @@
 ])
 
 @php
-    // Получаем текущее значение из запроса, если не передано явно
     $currentValue = $value ?? request($name);
-    // Генерируем ID из имени (заменяем [] на _)
     $fieldId = str_replace(['[', ']'], ['_', ''], $name);
 @endphp
 
@@ -17,18 +15,27 @@
     <label for="{{ $fieldId }}" class="form-label small mb-1">{{ $label }}</label>
     <select class="form-select form-select-sm" name="{{ $name }}" id="{{ $fieldId }}">
         <option value="">{{ $label }}</option>
-        @foreach($options as $option)
-            @if(is_object($option))
-                <option value="{{ $option->id }}"
-                    {{ (string)$currentValue === (string)$option->id ? 'selected' : '' }}>
-                    {{ $option->name }}
+
+        @if(is_iterable($options))
+            @foreach($options as $key => $option)
+                @if(is_object($option))
+                    @php
+                        $optionValue = $option->id ?? $option->getKey();
+                        $optionLabel = $option->name ?? $option->title ?? $option;
+                        $isSelected = (string)$currentValue === (string)$optionValue;
+                    @endphp
+                @else
+                    @php
+                        $optionValue = $key;
+                        $optionLabel = $option;
+                        $isSelected = (string)$currentValue === (string)$key;
+                    @endphp
+                @endif
+
+                <option value="{{ $optionValue }}" @selected($isSelected)>
+                    {{ $optionLabel }}
                 </option>
-            @else
-                <option value="{{ $key }}"
-                    {{ (string)$currentValue === (string)$key ? 'selected' : '' }}>
-                    {{ $option }}
-                </option>
-            @endif
-        @endforeach
+            @endforeach
+        @endif
     </select>
 </div>

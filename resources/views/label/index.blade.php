@@ -36,9 +36,7 @@
                             <tr>
                                 <td class="ps-4">{{ $label->id }}</td>
                                 <td>
-{{--                                    {{ $label->name }}--}}
                                     <x-badge>{{ $label->name }}</x-badge>
-{{--                                    <span style="display: none;">{{ $label->name }}</span>--}}
                                 </td>
                                 <td>
                                     {{ $label->description }}
@@ -55,9 +53,9 @@
                                             </a>
                                             <a href="{{ route('labels.destroy', $label->id) }}"
                                                onclick="event.preventDefault();
-            if (confirm('{{ __('Delete status «:name»?', ['name' => $label->name]) }}')) {
-                document.getElementById('delete-label-form-{{ $label->id }}').submit();
-            }"
+                                               if (confirm('{{ __('Delete status «:name»?', ['name' => $label->name]) }}')) {
+                                                   document.getElementById('delete-label-form-{{ $label->id }}').submit();
+                                               }"
                                                class="btn btn-outline-danger btn-sm rounded">
                                                 <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
                                             </a>

@@ -161,6 +161,15 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
+        $UserId = Auth::id();
+
+        $task = Task::findOrFail($id);
+
+        if ($task->creator->id !== $UserId) {
+            flash()->error('Не удалось удалить задачу');
+            return redirect(route('tasks.index'));
+        }
+
         Task::destroy($id);
         flash()->info('Задача успешно удалена!');
         return redirect(route('tasks.index'));
