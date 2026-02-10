@@ -302,7 +302,7 @@ class LabelControllerTest extends TestCase
 
         // Flash сообщение об ошибке (если есть)
         $flash = session('flash_notification', []);
-        if (!empty($flash)) {
+        if (isset($flash) && count($flash) > 0) {
             $this->assertEquals('danger', $flash[0]['level']);
             $this->assertEquals('Это обязательное поле', $flash[0]['message']);
         }
@@ -324,7 +324,7 @@ class LabelControllerTest extends TestCase
 
         // Flash сообщение об ошибке (если есть)
         $flash = session('flash_notification', []);
-        if (!empty($flash)) {
+        if (isset($flash) && count($flash) > 0) {
             $this->assertEquals('danger', $flash[0]['level']);
             $this->assertEquals('Метка с таким именем уже существует', $flash[0]['message']);
         }

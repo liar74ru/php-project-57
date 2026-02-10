@@ -203,7 +203,7 @@ class TaskControllerTest extends TestCase
 
         // 9. Проверяем, что задача обновилась
         $this->assertDatabaseHas('tasks', [
-            'id' => $task->id,
+            'id' => $task->getKey(),
             'name' => 'Updated by Another User',
             'status_id' => $newStatus->id,
             'assigned_to_id' => $editor->id, // Переназначена на редактора

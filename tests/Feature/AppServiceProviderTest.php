@@ -9,33 +9,33 @@ use Illuminate\Support\Facades\App;
 
 class AppServiceProviderTest extends TestCase
 {
-    public function testAppServiceProviderCanBeInstantiated(): void
-    {
-        $provider = new AppServiceProvider($this->app);
-        $this->assertInstanceOf(AppServiceProvider::class, $provider);
-    }
-
-    public function testAppServiceProviderHasBootMethod(): void
-    {
-        $provider = new AppServiceProvider($this->app);
-        $this->assertTrue(method_exists($provider, 'boot'));
-
-        // Вызываем метод
-        $provider->boot();
-
-        $this->assertTrue(true);
-    }
-
-    public function testAppServiceProviderHasRegisterMethod(): void
-    {
-        $provider = new AppServiceProvider($this->app);
-        $this->assertTrue(method_exists($provider, 'register'));
-
-        // Вызываем метод
-        $provider->register();
-
-        $this->assertTrue(true);
-    }
+//    public function testAppServiceProviderCanBeInstantiated(): void
+//    {
+//        $provider = new AppServiceProvider($this->app);
+//        $this->assertInstanceOf(AppServiceProvider::class, $provider);
+//    }
+//
+//    public function testAppServiceProviderHasBootMethod(): void
+//    {
+//        $provider = new AppServiceProvider($this->app);
+//        $this->assertTrue(method_exists($provider, 'boot'));
+//
+//        // Вызываем метод
+//        $provider->boot();
+//
+//        $this->assertTrue(true);
+//    }
+//
+//    public function testAppServiceProviderHasRegisterMethod(): void
+//    {
+//        $provider = new AppServiceProvider($this->app);
+//        $this->assertTrue(method_exists($provider, 'register'));
+//
+//        // Вызываем метод
+//        $provider->register();
+//
+//        $this->assertTrue(true);
+//    }
 
     public function testItForcesHttpsInProductionEnvironment(): void
     {

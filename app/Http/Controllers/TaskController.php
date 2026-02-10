@@ -78,7 +78,7 @@ class TaskController extends Controller
         $task = Task::create($taskData);
 
         // Прикрепляем метки
-        if (!empty($labelsData['labels'])) {
+        if (isset($labelsData['labels']) && count($labelsData['labels']) > 0) {
             $task->labels()->attach($labelsData['labels']);
         }
 

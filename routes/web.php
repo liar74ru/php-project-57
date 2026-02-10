@@ -13,7 +13,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/locale/{locale}', function ($locale) {
-    if (!in_array($locale, ['en', 'ru'])) {
+    if (!in_array($locale, ['en', 'ru'], true)) {
         $locale = 'en';
     }
 
