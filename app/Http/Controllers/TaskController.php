@@ -8,6 +8,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\Enums\FilterOperator;
@@ -17,7 +18,8 @@ class TaskController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        // Автоматически проверяем права для стандартных методов
+        $this->authorizeResource(Task::class, 'task');
     }
     /**
      * Display a listing of the resource.
@@ -159,18 +161,9 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        $UserId = Auth::id();
-
-        $task = Task::findOrFail($id);
-
-        if ($task->creator->id !== $UserId) {
-            flash()->error('Не удалось удалить задачу');
-            return redirect(route('tasks.index'));
-        }
-
-        Task::destroy($id);
+        $task->delete();
         flash()->info('Задача успешно удалена!');
         return redirect(route('tasks.index'));
     }

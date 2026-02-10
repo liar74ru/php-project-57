@@ -70,7 +70,7 @@
                                 <select class="rounded border-gray-300 w-1/3"
                                         name="assigned_to_id"
                                         id="assigned_to_id">
-                                    <option value="">{{ __('Select assignee') }}</option>
+                                    <option value="">{{ '' }}</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}"
                                             @selected(old('assigned_to_id') == $user->id)>
@@ -94,7 +94,6 @@
                                         name="labels[]"
                                         id="labels"
                                         multiple>
-                                    <option value="">{{ __('Select labels') }}</option>
                                     @isset($labels)
                                         @foreach($labels as $label)
                                             <option value="{{ $label->id }}"

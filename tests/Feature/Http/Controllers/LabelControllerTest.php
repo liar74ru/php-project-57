@@ -10,27 +10,41 @@ class LabelControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testNotAuthenticated()
+    public function testCreatePageRequiresAuth()
     {
-        $response = $this->get('/labels/create');
-        $response->assertRedirect('login');
-        $response->assertStatus(302);
+        $response = $this->get(route('labels.create'));
+        $response->assertRedirect(route('login'));
+    }
 
-        $response = $this->get('/labels/store');
-        $response->assertRedirect('login');
-        $response->assertStatus(302);
+    public function testStoreRequiresAuth()
+    {
+        $response = $this->post(route('labels.store'), [
+            'name' => 'Test Label'
+        ]);
+        $response->assertStatus(302); // Редирект на логин
+    }
 
-        $response = $this->get('/labels/edit');
-        $response->assertRedirect('login');
-        $response->assertStatus(302);
+    public function testEditPageRequiresAuth()
+    {
+        $label = Label::factory()->create();
+        $response = $this->get(route('labels.edit', $label));
+        $response->assertRedirect(route('login'));
+    }
 
-        $response = $this->get('/labels/update');
-        $response->assertRedirect('login');
-        $response->assertStatus(302);
+    public function testUpdateRequiresAuth()
+    {
+        $label = Label::factory()->create();
+        $response = $this->put(route('labels.update', $label), [
+            'name' => 'Updated Label'
+        ]);
+        $response->assertStatus(302); // Редирект на логин
+    }
 
-        $response = $this->get('/labels/destroy');
-        $response->assertRedirect('login');
-        $response->assertStatus(302);
+    public function testDestroyRequiresAuth()
+    {
+        $label = Label::factory()->create();
+        $response = $this->delete(route('labels.destroy', $label));
+        $response->assertStatus(302); // Редирект на логин
     }
 
     public function testIndex()

@@ -222,7 +222,7 @@ class TaskControllerTest extends TestCase
         $response = $this->put(route('tasks.update', $task), $updateData);
 
         // Должен быть редирект на login или 403
-        $response->assertRedirect('/login'); // Или assertStatus(403)
+        $response->assertStatus(403); // Или assertStatus(403)
     }
 
     public function testDestroy()

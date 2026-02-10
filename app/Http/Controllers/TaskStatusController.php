@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TaskStatusController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+        $this->authorizeResource(TaskStatus::class, 'task_status');
     }
     /**
      * Display a listing of the resource.
@@ -53,27 +54,29 @@ class TaskStatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TaskStatus $task_status)
     {
-        $task_status = TaskStatus::findOrFail($id);
         return view('task-status.edit', compact('task_status'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, TaskStatus $task_status)
     {
-        $taskStatus = TaskStatus::findOrFail($id);
-
         $data = $request->validate([
-            'name' => 'required|string|max:255|unique:task_statuses,name,' . $id
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('task_statuses')->ignore($task_status->id) // Игнорируем текущую метку
+            ],
         ], [
             'name.required' => 'Это обязательное поле',
             'name.unique' => 'Статус с таким именем уже существует.'
         ]);
 
-        $taskStatus->update($data);
+        $task_status->update($data);
 
         flash()->success('Статус успешно изменён!');
 
@@ -83,17 +86,15 @@ class TaskStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TaskStatus $task_status)
     {
-        $taskStatus = TaskStatus::findOrFail($id);
-
-        if ($taskStatus->tasks()->exists()) {
-            flash()->error('Не удалось удалить статус');
-            return redirect(route('task_statuses.index'));
+        if ($task_status->tasks()->exists()) {
+            flash()->error('Не удалось удалить статус!');
+        } else {
+            $task_status->delete();
+            flash()->success('Статус успешно удалён!');
         }
 
-        $taskStatus->delete();
-        flash()->info('Статус успешно удалён!');
         return redirect(route('task_statuses.index'));
     }
 }

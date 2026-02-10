@@ -108,7 +108,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertSessionHasErrors(['name']);
         $this->assertDatabaseCount('task_statuses', 1);
 
-        $this->get(route('task_statuses.edit', $taskStatus->id))
+        $this->get(route('task_statuses.edit', $taskStatus))
             ->assertSee('Статус с таким именем уже существует');
     }
 

@@ -11,7 +11,8 @@ class LabelController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+        $this->middleware('auth')->except(['index', 'show']);
+        $this->authorizeResource(Label::class, 'label');
     }
     /**
      * Display a listing of the resource.
@@ -50,18 +51,16 @@ class LabelController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Label $label)
     {
-        $label = Label::findOrFail($id);
         return view('label.edit', compact('label'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Label $label)  // Изменено с string $id на Label $label
     {
-        $label = Label::findOrFail($id);
         $data = $request->validate([
             'name' => [
                 'required',
@@ -82,16 +81,15 @@ class LabelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Label $label)
     {
-        $label = Label::findOrFail($id);
-
         if ($label->tasks()->exists()) {
             flash()->error('Не удалось удалить метку');
-            return redirect(route('labels.index'));
+        } else {
+            $label->delete();
+            flash()->success('Метка успешно удалена');
         }
-        $label->delete();
-        flash()->success('Метка успешно удалена');
+
         return redirect(route('labels.index'));
     }
 }
