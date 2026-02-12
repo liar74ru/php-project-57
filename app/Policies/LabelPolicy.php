@@ -35,7 +35,8 @@ class LabelPolicy
     public function delete(User $user, Label $label): bool
     {
         // Если сюда попали, значит $user точно не null
-        return true;
+
+        return !$label->tasks()->exists();
     }
 
     public function restore(User $user, Label $label): bool

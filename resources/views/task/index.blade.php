@@ -97,10 +97,10 @@
                                         {{ $task->name }}
                                     </a>
                                 </td>
-                                <td>{{ $task->creator->name ?? __('Unknown') }}</td>
+                                <td>{{ $task->createdBy->name ?? __('Unknown') }}</td>
                                 <td>
-                                    @if($task->assignee)
-                                        {{ $task->assignee->name }}
+                                    @if($task->assignedTo)
+                                        {{ $task->assignedTo->name }}
                                     @else
                                         <span class="text-muted">{{ __('Not assigned') }}</span>
                                     @endif
@@ -109,7 +109,7 @@
                                 @auth
                                     <td class="text-end pe-4">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            @if (Auth::user()->name == $task->creator->name)
+                                            @if (Auth::user()->name == $task->createdBy->name)
                                                 <a href="{{ route('tasks.destroy', $task->id) }}"
                                                    onclick="event.preventDefault();
                                                     if (confirm('{{ __('Delete task «:name»?', ['name' => $task->name]) }}')) {

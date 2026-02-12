@@ -41,7 +41,7 @@
                             </div>
                             <div>
                                 <select class="rounded border-gray-300 w-1/3" name="status_id" id="status_id">
-                                    <option value="">{{ __('Select status') }}</option>
+                                    <option value=""></option>
                                     @foreach($statuses as $status)
                                         <option value="{{ $status->id }}"
                                             @selected(old('status_id', $task->status_id) == $status->id)>
@@ -61,10 +61,10 @@
                             </div>
                             <div>
                                 <select class="rounded border-gray-300 w-1/3" name="assigned_to_id" id="assigned_to_id">
-                                    <option value="">{{ __('Select assignee') }}</option>
+                                    <option value=""></option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}"
-                                            @selected(old('assigned_to_id', $task->assigned_to_id) == $user->id)>
+                                            @selected(old('assigned_to_id', $task->assignedTo) == $user->id)>
                                             {{ $user->name }}
                                         </option>
                                     @endforeach
@@ -81,7 +81,6 @@
                             </div>
                             <div>
                                 <select class="rounded border-gray-300 w-1/3 h-32" name="labels[]" id="labels" multiple>
-                                    <option value="" disabled>{{ __('Select labels') }}</option>
                                     @foreach($allLabels as $label)
                                         <option value="{{ $label->id }}"
                                             @selected(in_array($label->id, old('labels', $attachedLabelIds)))>

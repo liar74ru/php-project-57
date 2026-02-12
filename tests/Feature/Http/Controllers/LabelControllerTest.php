@@ -13,7 +13,7 @@ class LabelControllerTest extends TestCase
     public function testCreatePageRequiresAuth()
     {
         $response = $this->get(route('labels.create'));
-        $response->assertRedirect(route('login'));
+        $response->assertStatus(403);
     }
 
     public function testStoreRequiresAuth()
@@ -21,14 +21,14 @@ class LabelControllerTest extends TestCase
         $response = $this->post(route('labels.store'), [
             'name' => 'Test Label'
         ]);
-        $response->assertStatus(302); // Редирект на логин
+        $response->assertStatus(403);
     }
 
     public function testEditPageRequiresAuth()
     {
         $label = Label::factory()->create();
         $response = $this->get(route('labels.edit', $label));
-        $response->assertRedirect(route('login'));
+        $response->assertStatus(403);
     }
 
     public function testUpdateRequiresAuth()
@@ -37,14 +37,14 @@ class LabelControllerTest extends TestCase
         $response = $this->put(route('labels.update', $label), [
             'name' => 'Updated Label'
         ]);
-        $response->assertStatus(302); // Редирект на логин
+        $response->assertStatus(403);
     }
 
     public function testDestroyRequiresAuth()
     {
         $label = Label::factory()->create();
         $response = $this->delete(route('labels.destroy', $label));
-        $response->assertStatus(302); // Редирект на логин
+        $response->assertStatus(403);
     }
 
     public function testIndex()
@@ -221,7 +221,7 @@ class LabelControllerTest extends TestCase
 
         $response = $this->delete("/labels/{$id}");
 
-        $response->assertRedirect('/labels');
+        $response->assertStatus(403);
 
         $this->assertDatabaseHas('labels', [
             'id' => $id,
@@ -295,12 +295,10 @@ class LabelControllerTest extends TestCase
         $response->assertRedirect('/labels');
 
         // Проверяем flash сообщение
-        $flash = session('flash_notification');
-        $this->assertNotEmpty($flash);
+        $flash = session('flash_notification'); // коллекция
 
-        $firstMessage = $flash[0];
-        $this->assertEquals('success', $firstMessage['level']);
-        $this->assertEquals('Метка успешно удалена', $firstMessage['message']);
+        $this->assertEquals('success', $flash->first()['level'] ?? null);
+        $this->assertEquals('Метка успешно удалена', $flash->first()['message'] ?? null);
 
         $this->assertDatabaseCount('labels', 0);
     }
@@ -391,20 +389,15 @@ class LabelControllerTest extends TestCase
      */
     protected function assertFlashMessage(string $message, string $level = 'success'): void
     {
-        $flash = session('flash_notification', []);
+        $flash = collect(session('flash_notification', []));
 
-        $found = false;
-        foreach ($flash as $item) {
-            if (
-                isset($item['message']) && $item['message'] === $message
-                && isset($item['level']) && $item['level'] === $level
-            ) {
-                $found = true;
-                break;
-            }
-        }
-
-        $this->assertTrue($found, "Flash message '{$message}' with level '{$level}' not found");
+        $this->assertTrue(
+            $flash->contains(fn($item) =>
+                ($item['message'] ?? null) === $message &&
+                ($item['level'] ?? null) === $level
+            ),
+            "Flash message '{$message}' with level '{$level}' not found"
+        );
     }
 
     /**

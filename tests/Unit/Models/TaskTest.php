@@ -51,13 +51,10 @@ class TaskTest extends TestCase
 
         // Проверяем связь с создателем
         // 1. Проверяем тип объекта - должен быть User
-        $this->assertInstanceOf(\App\Models\User::class, $task->creator);
+        $this->assertInstanceOf(\App\Models\User::class, $task->createdBy);
 
         // 2. Проверяем, что внешний ключ ссылается на правильный объект
-        $this->assertEquals($task->created_by_id, $task->creator->id);
-
-        // 3. Дополнительная проверка: метод createdBy() должен работать аналогично
-        $this->assertEquals($task->creator->id, $task->createdBy->id);
+        $this->assertEquals($task->created_by_id, $task->createdBy->id);
     }
 
     /**
@@ -70,12 +67,9 @@ class TaskTest extends TestCase
 
         // Проверяем связь с исполнителем
         // 1. Проверяем тип объекта - должен быть User
-        $this->assertInstanceOf(\App\Models\User::class, $task->assignee);
+        $this->assertInstanceOf(\App\Models\User::class, $task->assignedTo);
 
         // 2. Проверяем, что внешний ключ ссылается на правильный объект
-        $this->assertEquals($task->assigned_to_id, $task->assignee->id);
-
-        // 3. Дополнительная проверка: метод assignedTo() должен работать аналогично
-        $this->assertEquals($task->assignee->id, $task->assignedTo->id);
+        $this->assertEquals($task->assigned_to_id, $task->assignedTo->id);
     }
 }

@@ -26,11 +26,6 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $statuses = TaskStatus::all();
-        $users = User::all();
-
-        $currentValue = $request->input('filter');
-
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 AllowedFilter::exact('status_id'),
@@ -39,6 +34,13 @@ class TaskController extends Controller
             ])
             ->defaultSort('id')
             ->paginate(15);
+
+        $statuses = TaskStatus::orderBy('name')->pluck('name', 'id');
+        $users = User::orderBy('name')->pluck('name', 'id');
+
+        $currentValue = $request->input('filter');
+
+
 
         return view('task.index', compact('tasks', 'statuses', 'users', 'currentValue'));
     }
@@ -73,11 +75,7 @@ class TaskController extends Controller
             'labels.*' => 'integer|exists:labels,id',
         ]);
 
-        // Добавляем создателя
-        $taskData['created_by_id'] = Auth::id();
-
-        // Создаем задачу
-        $task = Task::create($taskData);
+        $task = Auth::user()->createdTasks()->create($taskData);
 
         // Прикрепляем метки
         if (isset($labelsData['labels']) && count($labelsData['labels']) > 0) {
@@ -93,7 +91,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['labels', 'status', 'creator', 'assignee']);
+        $task->load(['labels', 'status', 'createdBy', 'assignedTo']);
         $labels = Label::all();
         return view('task.show', compact('task', 'labels'));
     }
@@ -104,7 +102,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         // Жадная загрузка отношений задачи
-        $task->load(['status', 'creator', 'assignee', 'labels']);
+        $task->load(['status', 'createdBy', 'assignedTo', 'labels']);
 
         // Все доступные метки для выбора в форме
         $allLabels = Label::orderBy('name')->get();
@@ -163,12 +161,11 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $user = Auth::user();
-        if ($user->id !== $task->created_by_id) {
-            flash()->error('Не удалось удалить задачу!');
-        } else {
+        try {
             $task->delete();
-            flash()->info('Задача успешно удалена!');
+            flash()->success('Задача успешно удалена!');
+        } catch (\Exception $e) {
+            flash()->error('Не удалось удалить задачу!');
         }
 
         return redirect(route('tasks.index'));

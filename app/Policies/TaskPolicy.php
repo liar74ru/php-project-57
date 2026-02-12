@@ -53,7 +53,7 @@ class TaskPolicy
     public function delete(User $user, Task $task): bool
     {
         // Удалить задачу может только ее создатель
-        return true;
+        return $user->id === $task->created_by_id;
     }
 
     /**

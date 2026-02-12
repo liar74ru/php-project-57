@@ -136,11 +136,8 @@ class TaskControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($task->name);
         $response->assertSee($task->description);
-//        $response->assertSee(__('Edit'));
-//        $response->assertSee(__('Delete'));
     }
 
-    // Дополнительные тесты, которые могут быть полезны:
 
     public function testEdit()
     {
@@ -198,7 +195,6 @@ class TaskControllerTest extends TestCase
         $response = $this->put(route('tasks.update', $task), $updateData);
 
         // 8. Проверяем результат
-        // Если разрешено любому авторизованному:
         $response->assertRedirect(route('tasks.index'));
 
         // 9. Проверяем, что задача обновилась
@@ -222,7 +218,7 @@ class TaskControllerTest extends TestCase
         $response = $this->put(route('tasks.update', $task), $updateData);
 
         // Должен быть редирект на login или 403
-        $response->assertStatus(403); // Или assertStatus(403)
+        $response->assertStatus(403);
     }
 
     public function testDestroy()

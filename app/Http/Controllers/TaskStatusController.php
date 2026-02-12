@@ -44,14 +44,6 @@ class TaskStatusController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-//    public function show(string $id)
-//    {
-//        //
-//    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(TaskStatus $task_status)
@@ -88,11 +80,11 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $task_status)
     {
-        if ($task_status->tasks()->exists()) {
-            flash()->error('Не удалось удалить статус!');
-        } else {
+        try {
             $task_status->delete();
             flash()->success('Статус успешно удалён!');
+        } catch (\Exception $e) {
+            flash()->error('Не удалось удалить статус!');
         }
 
         return redirect(route('task_statuses.index'));

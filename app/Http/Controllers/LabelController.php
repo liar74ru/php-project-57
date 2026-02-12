@@ -11,7 +11,6 @@ class LabelController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
         $this->authorizeResource(Label::class, 'label');
     }
     /**
@@ -83,11 +82,11 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        if ($label->tasks()->exists()) {
-            flash()->error('Не удалось удалить метку');
-        } else {
+        try {
             $label->delete();
             flash()->success('Метка успешно удалена');
+        } catch (\Exception $e) {
+            flash()->error('Не удалось удалить метку');
         }
 
         return redirect(route('labels.index'));

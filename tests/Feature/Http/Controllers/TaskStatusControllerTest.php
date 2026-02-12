@@ -243,7 +243,7 @@ class TaskStatusControllerTest extends TestCase
 
         $response = $this->delete("/task_statuses/{$taskStatus->id}");
 
-        $response->assertRedirect('/task_statuses');
+        $response->assertStatus(403);
 
         $this->assertDatabaseHas('task_statuses', [
             'id' => $id,

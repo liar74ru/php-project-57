@@ -36,6 +36,6 @@ class TaskStatusPolicy
     public function delete(User $user, TaskStatus $taskStatus): bool
     {
         // Проверяем, что статус не используется в задачах
-        return true;
+        return !$taskStatus->status()->exists();
     }
 }
