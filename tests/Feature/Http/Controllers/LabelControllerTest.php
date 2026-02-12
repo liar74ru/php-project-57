@@ -394,8 +394,7 @@ class LabelControllerTest extends TestCase
         $this->assertTrue(
             $flash->contains(fn($item) =>
                 ($item['message'] ?? null) === $message &&
-                ($item['level'] ?? null) === $level
-            ),
+                ($item['level'] ?? null) === $level),
             "Flash message '{$message}' with level '{$level}' not found"
         );
     }

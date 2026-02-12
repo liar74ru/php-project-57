@@ -46,7 +46,7 @@ class Task extends Model
         return $this->belongsToMany(Label::class);
     }
 
-    public function make (): Task
+    public function make(): Task
     {
         return $this->created_by_id = Auth::id();
     }
